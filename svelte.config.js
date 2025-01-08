@@ -14,7 +14,7 @@ const config = {
 				exclude: ['<all>']
 			},
 			platformProxy: {
-				configPath: 'wrangler.toml',
+				configPath: undefined,
 				environment: undefined,
 				experimentalJsonConfig: false,
 				persist: false
