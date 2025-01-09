@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 
-	let letters: string[] = [
+	let tarotcards: string[] = [
 		'Fool',
 		'Magician',
 		'H.Priestess',
@@ -89,23 +89,46 @@
 	let showNumbers: boolean = true;
 
 	function randomize() {
-		letters = letters.sort(() => (Math.random() > 0.5 ? 1 : -1));
+		tarotcards = tarotcards.sort(() => (Math.random() > 0.5 ? 1 : -1));
 	}
 
 	function toggleVisibility() {
 		showNumbers = !showNumbers;
 	}
+
+	let activeCard: string | null = null;
+
+	function cardClicked(tarotcard: string) {
+		activeCard = activeCard === tarotcard ? null : tarotcard;
+	}
+
+	function handleEscPress(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			activeCard = null;
+		}
+	}
 </script>
+
+<svelte:window on:keydown={handleEscPress} />
 
 <div>
 	<div class="flex flex-col items-center justify-center">
 		<h1>Welcome to SvelteKit</h1>
 		<div class="example boxes-example max-w-5xl">
 			<div class="boxes">
-				{#each letters as letter (letter)}
-					<div class="box cursor-pointer" animate:flip={{ duration: 500 }}>
+				{#each tarotcards as tarotcard (tarotcard)}
+					<div
+						class="box cursor-pointer"
+						animate:flip={{ duration: 500 }}
+						class:center={activeCard === tarotcard}
+						on:click={() => cardClicked(tarotcard)}
+						on:keydown={(e) => {}}
+						tabindex="0"
+						role="button"
+						aria-label="Tarot card"
+					>
 						{#if showNumbers}
-							{letter}
+							{tarotcard}
 						{:else}
 							?
 						{/if}
@@ -150,5 +173,23 @@
 		font-weight: 300;
 		aspect-ratio: 1;
 		border: 1px solid gray;
+		background-color: white;
+
+		position: relative;
+		transition:
+			transform 0.3s ease-in-out,
+			z-index 0.3s;
+	}
+
+	.center {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 10;
+		width: 300px;
+		height: 300px;
+		font-size: 1.2em;
+		font-weight: bold;
 	}
 </style>
