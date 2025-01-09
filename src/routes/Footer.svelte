@@ -1,9 +1,9 @@
-<footer class="flex justify-between px-8">
+<footer class="flex px-8">
 	<div class="corner flex h-16 items-center">
 		<a href="/">cb.tarot</a>
 	</div>
 
-	<nav>
+	<nav class="m-auto">
 		<ul class="flex gap-6">
 			<li class="flex h-16 items-center">
 				<a href="/">home</a>
@@ -17,7 +17,5 @@
 		</ul>
 	</nav>
 
-	<div class="corner flex h-16 items-center">
-		<a href="https://github.com/sveltejs/kit"> gh </a>
-	</div>
+	<!-- <div class="corner flex h-16 items-center"></div> -->
 </footer>

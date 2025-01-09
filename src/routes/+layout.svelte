@@ -5,11 +5,9 @@
 	let { children } = $props();
 </script>
 
-<!-- {@render children()} -->
-
-<div class="app">
+<div class="app text-tra">
 	<Header />
-	<main class="min-h-screen p-8">
+	<main class="min-h-screen p-8 lowercase">
 		{@render children()}
 	</main>
 	<Footer />
