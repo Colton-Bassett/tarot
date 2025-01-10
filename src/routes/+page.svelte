@@ -97,8 +97,11 @@
 	}
 
 	let activeCard: string | null = null;
+	let spotlightCard: string | null = null;
 
 	function cardClicked(tarotcard: string) {
+		// if active, set null
+		// if not active, set active
 		activeCard = activeCard === tarotcard ? null : tarotcard;
 	}
 
@@ -107,20 +110,51 @@
 			activeCard = null;
 		}
 	}
+
+	function getRandomCard() {
+		const randomIndex = Math.floor(Math.random() * tarotcards.length);
+		return tarotcards[randomIndex];
+	}
+
+	function setSpotlightCards() {
+		let cardCount = 0;
+
+		// Set an interval to pick and set a new spotlight card every second
+		const interval = setInterval(() => {
+			if (cardCount < 5) {
+				spotlightCard = getRandomCard();
+				cardCount++;
+			} else {
+				clearInterval(interval); // Stop the interval after 5 cards
+				if (spotlightCard) {
+					cardClicked(spotlightCard);
+				}
+			}
+		}, 1500);
+	}
+
+	function handleClickOutside(event: MouseEvent) {
+		// Check if the clicked element has the class 'box'
+		if (!(event.target instanceof HTMLElement) || !event.target.classList.contains('box')) {
+			activeCard = null;
+			spotlightCard = null;
+		}
+	}
 </script>
 
-<svelte:window on:keydown={handleEscPress} />
+<svelte:window on:keydown={handleEscPress} on:click={handleClickOutside} />
 
 <div>
 	<div class="flex flex-col items-center justify-center">
 		<h1>Welcome to SvelteKit</h1>
-		<div class="example boxes-example max-w-5xl">
-			<div class="boxes">
+		<div class="max-w-5xl">
+			<div class="my-6 grid grid-cols-3 gap-2 md:grid-cols-6 lg:grid-cols-[repeat(10,_1fr)]">
 				{#each tarotcards as tarotcard (tarotcard)}
 					<div
-						class="box cursor-pointer"
+						class="box"
 						animate:flip={{ duration: 500 }}
 						class:center={activeCard === tarotcard}
+						class:spotlight={spotlightCard === tarotcard}
 						on:click={() => cardClicked(tarotcard)}
 						on:keydown={(e) => {}}
 						tabindex="0"
@@ -144,7 +178,7 @@
 						>Flip</button
 					>
 				</div>
-				<button class="border border-gray-500 px-6 py-1 lowercase" on:click={toggleVisibility}
+				<button class="border border-gray-500 px-6 py-1 lowercase" on:click={setSpotlightCards}
 					>Pick</button
 				>
 			</div>
@@ -156,29 +190,26 @@
 </div>
 
 <style>
-	.boxes {
-		display: flex;
-		flex-wrap: wrap;
-		margin: 2em -0.25em 2em -0.25em;
-	}
-
 	.box {
 		box-sizing: border-box;
-		width: calc(10% - 0.5em);
-		margin: 0.25em;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 0.875em;
 		font-weight: 300;
 		aspect-ratio: 1;
-		border: 1px solid gray;
+		min-width: 86px;
+		border: 1px solid #dedede;
 		background-color: white;
-
-		position: relative;
 		transition:
 			transform 0.3s ease-in-out,
-			z-index 0.3s;
+			z-index 0.3s ease-in-out,
+			border 0.15s ease;
+		cursor: pointer;
+	}
+
+	.box:hover {
+		border: 1px solid black;
 	}
 
 	.center {
@@ -191,5 +222,9 @@
 		height: 300px;
 		font-size: 1.2em;
 		font-weight: bold;
+	}
+
+	.spotlight {
+		border: 2px solid black;
 	}
 </style>
