@@ -130,7 +130,7 @@
 					cardClicked(spotlightCard);
 				}
 			}
-		}, 1500);
+		}, 1000);
 	}
 
 	function handleClickOutside(event: MouseEvent) {
@@ -142,51 +142,54 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Home</title>
+	<meta name="description" content="Svelte demo app" />
+</svelte:head>
+
 <svelte:window on:keydown={handleEscPress} on:click={handleClickOutside} />
 
-<div>
-	<div class="flex flex-col items-center justify-center">
-		<h1>Welcome to SvelteKit</h1>
-		<div class="max-w-5xl">
-			<div class="my-6 grid grid-cols-3 gap-2 md:grid-cols-6 lg:grid-cols-[repeat(10,_1fr)]">
-				{#each tarotcards as tarotcard (tarotcard)}
-					<div
-						class="box"
-						animate:flip={{ duration: 500 }}
-						class:center={activeCard === tarotcard}
-						class:spotlight={spotlightCard === tarotcard}
-						on:click={() => cardClicked(tarotcard)}
-						on:keydown={(e) => {}}
-						tabindex="0"
-						role="button"
-						aria-label="Tarot card"
-					>
-						{#if showNumbers}
-							{tarotcard}
-						{:else}
-							?
-						{/if}
-					</div>
-				{/each}
-			</div>
-			<div class="flex justify-between">
-				<div>
-					<button class="border border-gray-500 px-6 py-1 lowercase" on:click={randomize}
-						>Randomize</button
-					>
-					<button class="border border-gray-500 px-6 py-1 lowercase" on:click={toggleVisibility}
-						>Flip</button
-					>
+<div class="flex flex-col items-center justify-center">
+	<h1>Welcome to SvelteKit</h1>
+	<div class="max-w-5xl">
+		<div class="my-6 grid grid-cols-3 gap-2 md:grid-cols-6 lg:grid-cols-[repeat(10,_1fr)]">
+			{#each tarotcards as tarotcard (tarotcard)}
+				<div
+					class="box"
+					animate:flip={{ duration: 500 }}
+					class:center={activeCard === tarotcard}
+					class:spotlight={spotlightCard === tarotcard}
+					on:click={() => cardClicked(tarotcard)}
+					on:keydown={(e) => {}}
+					tabindex="0"
+					role="button"
+					aria-label="Tarot card"
+				>
+					{#if showNumbers}
+						{tarotcard}
+					{:else}
+						?
+					{/if}
 				</div>
-				<button class="border border-gray-500 px-6 py-1 lowercase" on:click={setSpotlightCards}
-					>Pick</button
+			{/each}
+		</div>
+		<div class="flex flex-col justify-between md:flex-row">
+			<div class="flex justify-between">
+				<button class="border border-gray-500 px-6 py-1 lowercase" on:click={randomize}
+					>Randomize</button
+				>
+				<button class="border border-gray-500 px-6 py-1 lowercase" on:click={toggleVisibility}
+					>Flip</button
 				>
 			</div>
+			<button class="border border-gray-500 px-6 py-1 lowercase" on:click={setSpotlightCards}
+				>Pick</button
+			>
 		</div>
-		<p>
-			Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation
-		</p>
 	</div>
+	<p class="mt-6 text-center">
+		Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation
+	</p>
 </div>
 
 <style>
@@ -222,6 +225,7 @@
 		height: 300px;
 		font-size: 1.2em;
 		font-weight: bold;
+		transition: all 0.3s ease-in-out;
 	}
 
 	.spotlight {
