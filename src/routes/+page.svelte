@@ -2,195 +2,401 @@
 	import { flip } from 'svelte/animate';
 
 	interface Card {
-		id: Number;
-		name: String;
-		upright: String;
-		reversed: String;
+		id: number;
+		name: string;
+		isUpright: boolean;
+		description: {
+			upright: string;
+			reversed: string;
+		};
 	}
 
-	let tDeck: Card[] = [
-		{ id: 1, name: 'Fool', upright: 'desc', reversed: 'desc' },
-		{ id: 2, name: 'Magician', upright: 'desc', reversed: 'desc' },
-		{ id: 3, name: 'H.Priestess', upright: 'desc', reversed: 'desc' },
-		{ id: 4, name: 'Empress', upright: 'desc', reversed: 'desc' },
-		{ id: 5, name: 'Emperor', upright: 'desc', reversed: 'desc' },
-		{ id: 6, name: 'Hiero', upright: 'desc', reversed: 'desc' },
-		{ id: 7, name: 'Lovers', upright: 'desc', reversed: 'desc' },
-		{ id: 8, name: 'Chariot', upright: 'desc', reversed: 'desc' },
-		{ id: 9, name: 'Strength', upright: 'desc', reversed: 'desc' },
-		{ id: 10, name: 'Hermit', upright: 'desc', reversed: 'desc' },
-		{ id: 11, name: 'Wheel.F', upright: 'desc', reversed: 'desc' },
-		{ id: 12, name: 'Justice', upright: 'desc', reversed: 'desc' },
-		{ id: 13, name: 'Hanged.M', upright: 'desc', reversed: 'desc' },
-		{ id: 14, name: 'Death', upright: 'desc', reversed: 'desc' },
-		{ id: 15, name: 'Temp.', upright: 'desc', reversed: 'desc' },
-		{ id: 16, name: 'Devil', upright: 'desc', reversed: 'desc' },
-		{ id: 17, name: 'Tower', upright: 'desc', reversed: 'desc' },
-		{ id: 18, name: 'Star', upright: 'desc', reversed: 'desc' },
-		{ id: 19, name: 'Moon', upright: 'desc', reversed: 'desc' },
-		{ id: 20, name: 'Sun', upright: 'desc', reversed: 'desc' },
-		{ id: 21, name: 'Judg.', upright: 'desc', reversed: 'desc' },
-		{ id: 22, name: 'World', upright: 'desc', reversed: 'desc' },
+	let tarotDeck: Card[] = [
+		{ id: 1, name: 'Fool', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{
+			id: 2,
+			name: 'Magician',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 3,
+			name: 'H.Priestess',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{ id: 4, name: 'Empress', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 5, name: 'Emperor', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 6, name: 'Hiero', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 7, name: 'Lovers', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 8, name: 'Chariot', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{
+			id: 9,
+			name: 'Strength',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{ id: 10, name: 'Hermit', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{
+			id: 11,
+			name: 'Wheel.F',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 12,
+			name: 'Justice',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 13,
+			name: 'Hanged.M',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{ id: 14, name: 'Death', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 15, name: 'Temp.', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 16, name: 'Devil', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 17, name: 'Tower', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 18, name: 'Star', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 19, name: 'Moon', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 20, name: 'Sun', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 21, name: 'Judg.', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 22, name: 'World', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
 
-		{ id: 23, name: 'Kn.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 24, name: 'K.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 25, name: 'Q.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 26, name: 'Pg.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 27, name: 'II.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 28, name: 'III.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 29, name: 'IV.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 30, name: 'V.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 31, name: 'VI.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 32, name: 'VII.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 33, name: 'VIII.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 34, name: 'IX.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 35, name: 'X.Wands', upright: 'desc', reversed: 'desc' },
-		{ id: 36, name: 'A.Wands', upright: 'desc', reversed: 'desc' },
+		{
+			id: 23,
+			name: 'Kn.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 24,
+			name: 'K.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 25,
+			name: 'Q.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 26,
+			name: 'Pg.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 27,
+			name: 'II.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 28,
+			name: 'III.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 29,
+			name: 'IV.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 30,
+			name: 'V.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 31,
+			name: 'VI.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 32,
+			name: 'VII.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 33,
+			name: 'VIII.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 34,
+			name: 'IX.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 35,
+			name: 'X.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 36,
+			name: 'A.Wands',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
 
-		{ id: 37, name: 'Kn.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 38, name: 'K.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 39, name: 'Q.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 40, name: 'Pg.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 41, name: 'II.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 42, name: 'III.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 43, name: 'IV.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 44, name: 'V.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 45, name: 'VI.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 46, name: 'VII.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 47, name: 'VIII.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 48, name: 'IX.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 49, name: 'X.Cups', upright: 'desc', reversed: 'desc' },
-		{ id: 50, name: 'A.Cups', upright: 'desc', reversed: 'desc' },
+		{
+			id: 37,
+			name: 'Kn.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{ id: 38, name: 'K.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 39, name: 'Q.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{
+			id: 40,
+			name: 'Pg.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 41,
+			name: 'II.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 42,
+			name: 'III.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 43,
+			name: 'IV.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{ id: 44, name: 'V.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{
+			id: 45,
+			name: 'VI.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 46,
+			name: 'VII.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 47,
+			name: 'VIII.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 48,
+			name: 'IX.Cups',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{ id: 49, name: 'X.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
+		{ id: 50, name: 'A.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
 
-		{ id: 51, name: 'Kn.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 52, name: 'K.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 53, name: 'Q.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 54, name: 'Pg.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 55, name: 'II.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 56, name: 'III.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 57, name: 'IV.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 58, name: 'V.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 59, name: 'VI.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 60, name: 'VII.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 61, name: 'VIII.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 62, name: 'IX.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 63, name: 'X.Swords', upright: 'desc', reversed: 'desc' },
-		{ id: 64, name: 'A.Swords', upright: 'desc', reversed: 'desc' },
+		{
+			id: 51,
+			name: 'Kn.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 52,
+			name: 'K.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 53,
+			name: 'Q.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 54,
+			name: 'Pg.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 55,
+			name: 'II.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 56,
+			name: 'III.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 57,
+			name: 'IV.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 58,
+			name: 'V.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 59,
+			name: 'VI.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 60,
+			name: 'VII.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 61,
+			name: 'VIII.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 62,
+			name: 'IX.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 63,
+			name: 'X.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 64,
+			name: 'A.Swords',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
 
-		{ id: 65, name: 'Kn.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 66, name: 'K.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 67, name: 'Q.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 68, name: 'Pg.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 69, name: 'II.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 70, name: 'III.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 71, name: 'IV.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 72, name: 'V.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 73, name: 'VI.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 74, name: 'VII.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 75, name: 'VIII.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 76, name: 'IX.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 77, name: 'X.Pents', upright: 'desc', reversed: 'desc' },
-		{ id: 78, name: 'A.Pents', upright: 'desc', reversed: 'desc' }
-	];
-
-	let tarotDeck: string[] = [
-		'Fool',
-		'Magician',
-		'H.Priestess',
-		'Empress',
-		'Emperor',
-		'Hiero',
-		'Lovers',
-		'Chariot',
-		'Strength',
-		'Hermit',
-		'Wheel.F',
-		'Justice',
-		'Hanged.M',
-		'Death',
-		'Temp.',
-		'Devil',
-		'Tower',
-		'Star',
-		'Moon',
-		'Sun',
-		'Judg.',
-		'World',
-
-		'Kn.Wands',
-		'K.Wands',
-		'Q.Wands',
-		'Pg.Wands',
-		'II.Wands',
-		'III.Wands',
-		'IV.Wands',
-		'V.Wands',
-		'VI.Wands',
-		'VII.Wands',
-		'VIII.Wands',
-		'IX.Wands',
-		'X.Wands',
-		'A.Wands',
-
-		'Kn.Cups',
-		'K.Cups',
-		'Q.Cups',
-		'Pg.Cups',
-		'II.Cups',
-		'III.Cups',
-		'IV.Cups',
-		'V.Cups',
-		'VI.Cups',
-		'VII.Cups',
-		'VIII.Cups',
-		'IX.Cups',
-		'X.Cups',
-		'A.Cups',
-
-		'Kn.Swords',
-		'K.Swords',
-		'Q.Swords',
-		'Pg.Swords',
-		'II.Swords',
-		'III.Swords',
-		'IV.Swords',
-		'V.Swords',
-		'VI.Swords',
-		'VII.Swords',
-		'VIII.Swords',
-		'IX.Swords',
-		'X.Swords',
-		'A.Swords',
-
-		'Kn.Pents',
-		'K.Pents',
-		'Q.Pents',
-		'Pg.Pents',
-		'II.Pents',
-		'III.Pents',
-		'IV.Pents',
-		'V.Pents',
-		'VI.Pents',
-		'VII.Pents',
-		'VIII.Pents',
-		'IX.Pents',
-		'X.Pents',
-		'A.Pents'
+		{
+			id: 65,
+			name: 'Kn.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 66,
+			name: 'K.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 67,
+			name: 'Q.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 68,
+			name: 'Pg.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 69,
+			name: 'II.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 70,
+			name: 'III.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 71,
+			name: 'IV.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 72,
+			name: 'V.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 73,
+			name: 'VI.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 74,
+			name: 'VII.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 75,
+			name: 'VIII.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 76,
+			name: 'IX.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{
+			id: 77,
+			name: 'X.Pents',
+			isUpright: true,
+			description: { upright: 'desc', reversed: 'desc' }
+		},
+		{ id: 78, name: 'A.Pents', isUpright: true, description: { upright: 'desc', reversed: 'desc' } }
 	];
 
 	function shuffleDeck() {
+		// shuffle
 		tarotDeck = tarotDeck.sort(() => (Math.random() > 0.5 ? 1 : -1));
+
+		// isUpright
+		tarotDeck.forEach((card) => {
+			card.isUpright = Math.random() < 0.5;
+		});
 	}
 
-	let showNumbers: boolean = true;
-	function toggleVisibility() {
-		showNumbers = !showNumbers;
+	let showCardFront: boolean = true;
+	function toggleFlip() {
+		showCardFront = !showCardFront;
 	}
 
-	let selectedCard: string | null = null;
-	let pickPreviewCard: string | null = null;
+	let selectedCard: Card | null = null;
+	let pickPreviewCard: Card | null = null;
 
-	function selectCard(tarotCard: string) {
+	let revealReading: boolean;
+
+	function selectCard(tarotCard: Card) {
 		// if active, set null; if not active, set active
 		selectedCard = selectedCard === tarotCard ? null : tarotCard;
 	}
@@ -250,19 +456,21 @@
 					<div animate:flip={{ duration: 500 }}>
 						<div
 							class="box"
-							class:center={selectedCard === tarotCard}
-							class:highlight={pickPreviewCard === tarotCard}
+							class:center={selectedCard && selectedCard.id === tarotCard.id}
+							class:highlight={pickPreviewCard && pickPreviewCard.id === tarotCard.id}
 							on:click={() => selectCard(tarotCard)}
 							on:keydown={(e) => {}}
 							tabindex="0"
 							role="button"
 							aria-label="Tarot card"
 						>
-							{#if showNumbers}
-								{tarotCard}
-							{:else}
-								?
-							{/if}
+							<span class="pointer-events-none" class:reversed={!tarotCard.isUpright}>
+								{#if showCardFront}
+									{tarotCard.name}
+								{:else}
+									?
+								{/if}
+							</span>
 						</div>
 						<div class="hidden" class:visible={selectedCard === tarotCard}></div>
 					</div>
@@ -275,7 +483,7 @@
 					<button class="border border-gray-500 px-6 py-1 lowercase" on:click={shuffleDeck}
 						>Shuffle</button
 					>
-					<button class="border border-gray-500 px-6 py-1 lowercase" on:click={toggleVisibility}
+					<button class="border border-gray-500 px-6 py-1 lowercase" on:click={toggleFlip}
 						>Flip</button
 					>
 				</div>
@@ -299,7 +507,10 @@
 		font-size: 0.875em;
 		font-weight: 300;
 		aspect-ratio: 1;
-		min-width: 86px;
+		min-width: 90px;
+		max-width: 90px;
+		max-height: 90px;
+		min-height: 90px;
 		border: 1px solid #dedede;
 		background-color: white;
 		transition:
@@ -311,6 +522,15 @@
 
 	.box:hover {
 		border: 1px solid black;
+		animation: tilt-n-move-shaking 0.5s ease-in-out infinite 0.5s;
+	}
+
+	.box span {
+		transition: transform 0.3s ease;
+	}
+
+	.box:hover span {
+		transform: none;
 	}
 
 	.center {
@@ -319,8 +539,8 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 10;
-		width: 300px;
-		height: 300px;
+		min-width: 286px;
+		min-height: 286px;
 		font-size: 1.2em;
 		font-weight: bold;
 		transition: all 0.3s ease-in-out;
@@ -332,5 +552,27 @@
 
 	.visible {
 		display: flex;
+	}
+
+	.reversed::after {
+		content: '*';
+	}
+
+	@keyframes tilt-n-move-shaking {
+		0% {
+			transform: translate(-50%, -50%) rotate(0deg);
+		}
+		25% {
+			transform: translate(-50%, -50%) rotate(5deg);
+		}
+		50% {
+			transform: translate(-50%, -50%) rotate(0deg);
+		}
+		75% {
+			transform: translate(-50%, -50%) rotate(-5deg);
+		}
+		100% {
+			transform: translate(-50%, -50%) rotate(0deg);
+		}
 	}
 </style>
