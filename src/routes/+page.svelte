@@ -471,6 +471,29 @@
 									?
 								{/if}
 							</span>
+							<div
+								class:showReading={selectedCard && selectedCard.id === tarotCard.id}
+								class="hidden"
+							>
+								<p class="mb-4">
+									Lorem ipsum odor amet, consectetuer adipiscing elit. Lacinia pellentesque feugiat
+									dis magna augue natoque torquent dis. Lorem ipsum odor amet, consectetuer
+									adipiscing elit. Lacinia pellentesque feugiat dis magna augue natoque torquent
+									dis.
+								</p>
+								<p class="mb-4">
+									Lorem ipsum odor amet, consectetuer adipiscing elit. Lacinia pellentesque feugiat
+									dis magna augue natoque torquent dis. Lorem ipsum odor amet, consectetuer
+									adipiscing elit. Lacinia pellentesque feugiat dis magna augue natoque torquent
+									dis.
+								</p>
+								<p class="mb">
+									Lorem ipsum odor amet, consectetuer adipiscing elit. Lacinia pellentesque feugiat
+									dis magna augue natoque torquent dis. Lorem ipsum odor amet, consectetuer
+									adipiscing elit. Lacinia pellentesque feugiat dis magna augue natoque torquent
+									dis.
+								</p>
+							</div>
 						</div>
 						<div class="hidden" class:visible={selectedCard === tarotCard}></div>
 					</div>
@@ -502,6 +525,7 @@
 	.box {
 		box-sizing: border-box;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		font-size: 0.875em;
@@ -511,6 +535,7 @@
 		max-width: 90px;
 		max-height: 90px;
 		min-height: 90px;
+
 		border: 1px solid #dedede;
 		background-color: white;
 		transition:
@@ -518,11 +543,13 @@
 			z-index 0.3s ease-in-out,
 			border 0.15s ease;
 		cursor: pointer;
+
+		overflow: auto;
 	}
 
 	.box:hover {
 		border: 1px solid black;
-		animation: tilt-n-move-shaking 0.5s ease-in-out infinite 0.5s;
+		animation: tilt-n-move-shaking 0.5s ease-in-out 0.5s;
 	}
 
 	.box span {
@@ -539,11 +566,27 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 10;
-		min-width: 286px;
-		min-height: 286px;
+		min-width: 90%;
+		min-height: 500px;
 		font-size: 1.2em;
-		font-weight: bold;
+		padding: 1.5rem;
+
 		transition: all 0.3s ease-in-out;
+
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+
+	@media (min-width: 768px) {
+		.center {
+			min-width: 450px;
+		}
+	}
+
+	.showReading {
+		display: flex;
+		flex-direction: column;
+		padding-top: 0.5rem;
 	}
 
 	.highlight {
