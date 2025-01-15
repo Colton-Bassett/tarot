@@ -1,9 +1,11 @@
+<svelte:options runes />
+
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { deck, type Card } from '$lib/deck';
 	import { formatTextIntoParagraphs } from '$lib/helpers';
 
-	let tarotDeck = deck;
+	let tarotDeck = $state(deck);
 
 	function shuffleDeck() {
 		// shuffle
@@ -15,14 +17,14 @@
 		});
 	}
 
-	let showCardFront: boolean = true;
+	let showCardFront: boolean = $state(true);
 	function toggleFlip() {
 		showCardFront = !showCardFront;
 	}
 
-	let selectedCard: Card | null = null;
+	let selectedCard: Card | null = $state(null);
 	let pickPreviewCard: Card | null = null;
-	let isReadingVisible: boolean;
+	let isReadingVisible: boolean | undefined = $state();
 
 	function selectCard(tarotCard: Card) {
 		if (isSelected(tarotCard)) {
@@ -95,7 +97,7 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<svelte:window on:keydown={handleEscPress} on:click={handleClickOutside} />
+<svelte:window onkeydown={handleEscPress} onclick={handleClickOutside} />
 
 <div class="flex flex-col items-center justify-center">
 	<h1>Welcome to SvelteKit</h1>
@@ -108,8 +110,8 @@
 							class="card"
 							class:center={isSelected(tarotCard)}
 							class:highlight={isHighlighted(tarotCard)}
-							on:click={() => selectCard(tarotCard)}
-							on:keydown={(e) => {}}
+							onclick={() => selectCard(tarotCard)}
+							onkeydown={(e) => {}}
 							tabindex="0"
 							role="button"
 							aria-label="Tarot card"
@@ -146,14 +148,14 @@
 		<div class="max-w-5xl">
 			<div class="flex flex-col justify-between md:flex-row">
 				<div class="flex justify-between">
-					<button class="border border-gray-500 px-6 py-1 lowercase" on:click={shuffleDeck}
+					<button class="border border-gray-500 px-6 py-1 lowercase" onclick={shuffleDeck}
 						>Shuffle</button
 					>
-					<button class="border border-gray-500 px-6 py-1 lowercase" on:click={toggleFlip}
+					<button class="border border-gray-500 px-6 py-1 lowercase" onclick={toggleFlip}
 						>Flip</button
 					>
 				</div>
-				<button class="border border-gray-500 px-6 py-1 lowercase" on:click={randomlyPickCard}
+				<button class="border border-gray-500 px-6 py-1 lowercase" onclick={randomlyPickCard}
 					>Pick</button
 				>
 			</div>

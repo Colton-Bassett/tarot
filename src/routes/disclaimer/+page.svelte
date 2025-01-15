@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <svelte:head>
 	<title>Disclaimer</title>
 	<meta name="description" content="About this app" />
