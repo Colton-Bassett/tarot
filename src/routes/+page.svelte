@@ -102,7 +102,7 @@
 <svelte:window onkeydown={handleEscPress} onclick={handleClickOutside} />
 
 <div class="flex flex-col items-center justify-center">
-	<TypeWriter><h1>Welcome to cb.tarot</h1></TypeWriter>
+	<TypeWriter><h1 class="welcome">Welcome to cb.tarot</h1></TypeWriter>
 
 	<div class="flex min-h-[972px] max-w-5xl flex-col-reverse lg:flex-col">
 		<div class="">
@@ -163,15 +163,15 @@
 		<div class="max-w-5xl">
 			<div class="flex flex-col justify-between md:flex-row">
 				<div class="flex justify-between">
-					<button class="border border-gray-500 px-6 py-1 lowercase" onclick={shuffleDeck}
-						>Shuffle</button
+					<button class="button border border-gray-500 px-6 py-1 lowercase" onclick={shuffleDeck}
+						>[x] shuffle</button
 					>
 					<!-- <button class="border border-gray-500 px-6 py-1 lowercase" onclick={toggleFlip}
 						>Flip</button
 					> -->
 				</div>
-				<button class="border border-gray-500 px-6 py-1 lowercase" onclick={randomlyPickCard}
-					>Pick</button
+				<button class="button border border-gray-500 px-6 py-1 lowercase" onclick={randomlyPickCard}
+					>[p] pick</button
 				>
 			</div>
 		</div>
@@ -182,6 +182,9 @@
 </div>
 
 <style>
+	.welcome {
+	}
+
 	.card {
 		box-sizing: border-box;
 		display: flex;
@@ -205,6 +208,8 @@
 		cursor: pointer;
 
 		overflow: auto;
+
+		font-family: 'Inter', sans-serif;
 	}
 
 	.card:hover {
@@ -262,6 +267,10 @@
 
 	.showReading {
 		display: flex;
+	}
+
+	.button {
+		font-family: 'Inter Tight', sans-serif;
 	}
 
 	@keyframes tilt-n-move-shaking {

@@ -19,3 +19,9 @@
 
 	<!-- <div class="corner flex h-16 items-center"></div> -->
 </footer>
+
+<style>
+	footer {
+		font-family: 'Inter Tight', sans-serif;
+	}
+</style>

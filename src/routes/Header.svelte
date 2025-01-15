@@ -17,3 +17,9 @@
 		</div>
 	</nav>
 </header>
+
+<style>
+	header {
+		font-family: 'Inter Tight', sans-serif;
+	}
+</style>
