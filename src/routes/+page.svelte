@@ -1,380 +1,8 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
+	import { deck, type Card } from '$lib/deck';
 
-	interface Card {
-		id: number;
-		name: string;
-		isUpright: boolean;
-		description: {
-			upright: string;
-			reversed: string;
-		};
-	}
-
-	let tarotDeck: Card[] = [
-		{ id: 1, name: 'Fool', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{
-			id: 2,
-			name: 'Magician',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 3,
-			name: 'H.Priestess',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{ id: 4, name: 'Empress', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 5, name: 'Emperor', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 6, name: 'Hiero', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 7, name: 'Lovers', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 8, name: 'Chariot', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{
-			id: 9,
-			name: 'Strength',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{ id: 10, name: 'Hermit', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{
-			id: 11,
-			name: 'Wheel.F',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 12,
-			name: 'Justice',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 13,
-			name: 'Hanged.M',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{ id: 14, name: 'Death', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 15, name: 'Temp.', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 16, name: 'Devil', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 17, name: 'Tower', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 18, name: 'Star', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 19, name: 'Moon', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 20, name: 'Sun', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 21, name: 'Judg.', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 22, name: 'World', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-
-		{
-			id: 23,
-			name: 'Kn.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 24,
-			name: 'K.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 25,
-			name: 'Q.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 26,
-			name: 'Pg.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 27,
-			name: 'II.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 28,
-			name: 'III.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 29,
-			name: 'IV.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 30,
-			name: 'V.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 31,
-			name: 'VI.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 32,
-			name: 'VII.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 33,
-			name: 'VIII.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 34,
-			name: 'IX.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 35,
-			name: 'X.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 36,
-			name: 'A.Wands',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-
-		{
-			id: 37,
-			name: 'Kn.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{ id: 38, name: 'K.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 39, name: 'Q.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{
-			id: 40,
-			name: 'Pg.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 41,
-			name: 'II.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 42,
-			name: 'III.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 43,
-			name: 'IV.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{ id: 44, name: 'V.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{
-			id: 45,
-			name: 'VI.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 46,
-			name: 'VII.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 47,
-			name: 'VIII.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 48,
-			name: 'IX.Cups',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{ id: 49, name: 'X.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-		{ id: 50, name: 'A.Cups', isUpright: true, description: { upright: 'desc', reversed: 'desc' } },
-
-		{
-			id: 51,
-			name: 'Kn.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 52,
-			name: 'K.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 53,
-			name: 'Q.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 54,
-			name: 'Pg.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 55,
-			name: 'II.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 56,
-			name: 'III.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 57,
-			name: 'IV.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 58,
-			name: 'V.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 59,
-			name: 'VI.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 60,
-			name: 'VII.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 61,
-			name: 'VIII.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 62,
-			name: 'IX.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 63,
-			name: 'X.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 64,
-			name: 'A.Swords',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-
-		{
-			id: 65,
-			name: 'Kn.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 66,
-			name: 'K.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 67,
-			name: 'Q.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 68,
-			name: 'Pg.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 69,
-			name: 'II.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 70,
-			name: 'III.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 71,
-			name: 'IV.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 72,
-			name: 'V.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 73,
-			name: 'VI.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 74,
-			name: 'VII.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 75,
-			name: 'VIII.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 76,
-			name: 'IX.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{
-			id: 77,
-			name: 'X.Pents',
-			isUpright: true,
-			description: { upright: 'desc', reversed: 'desc' }
-		},
-		{ id: 78, name: 'A.Pents', isUpright: true, description: { upright: 'desc', reversed: 'desc' } }
-	];
+	let tarotDeck = deck;
 
 	function shuffleDeck() {
 		// shuffle
@@ -393,17 +21,37 @@
 
 	let selectedCard: Card | null = null;
 	let pickPreviewCard: Card | null = null;
-
-	let revealReading: boolean;
+	let isReadingVisible: boolean;
 
 	function selectCard(tarotCard: Card) {
-		// if active, set null; if not active, set active
-		selectedCard = selectedCard === tarotCard ? null : tarotCard;
+		if (isSelected(tarotCard)) {
+			isReadingVisible = true;
+			return;
+		}
+
+		selectedCard = tarotCard;
+	}
+
+	// comparison helpers
+	function isSelected(tarotCard: Card) {
+		return selectedCard && selectedCard.id === tarotCard.id;
+	}
+
+	function isHighlighted(tarotCard: Card) {
+		return pickPreviewCard && pickPreviewCard.id === tarotCard.id;
 	}
 
 	function getRandomCard() {
 		const randomIndex = Math.floor(Math.random() * tarotDeck.length);
 		return tarotDeck[randomIndex];
+	}
+
+	function getKeywords(tarotCard: Card) {
+		if (tarotCard.isUpright) {
+			return tarotCard.keywords.upright;
+		} else {
+			return tarotCard.keywords.reversed;
+		}
 	}
 
 	function randomlyPickCard() {
@@ -424,18 +72,19 @@
 	}
 
 	// svelte:window events
-
 	function handleEscPress(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
 			selectedCard = null;
+			isReadingVisible = false;
 		}
 	}
 
 	function handleClickOutside(event: MouseEvent) {
-		// check if the clicked element has the class 'box'
-		if (!(event.target instanceof HTMLElement) || !event.target.classList.contains('box')) {
+		// check if the clicked element has the class 'card'
+		if (!(event.target instanceof HTMLElement) || !event.target.classList.contains('card')) {
 			selectedCard = null;
 			pickPreviewCard = null;
+			isReadingVisible = false;
 		}
 	}
 </script>
@@ -455,43 +104,48 @@
 				{#each tarotDeck as tarotCard (tarotCard)}
 					<div animate:flip={{ duration: 500 }}>
 						<div
-							class="box"
-							class:center={selectedCard && selectedCard.id === tarotCard.id}
-							class:highlight={pickPreviewCard && pickPreviewCard.id === tarotCard.id}
+							class="card"
+							class:center={isSelected(tarotCard)}
+							class:highlight={isHighlighted(tarotCard)}
 							on:click={() => selectCard(tarotCard)}
 							on:keydown={(e) => {}}
 							tabindex="0"
 							role="button"
 							aria-label="Tarot card"
 						>
-							<span class="pointer-events-none" class:reversed={!tarotCard.isUpright}>
+							<span
+								class="pointer-events-none w-full text-center"
+								class:reversed={!tarotCard.isUpright}
+							>
 								{#if showCardFront}
 									{tarotCard.name}
 								{:else}
 									?
 								{/if}
 							</span>
+							<span
+								class="hidden w-full justify-center text-center"
+								class:showReading={isSelected(tarotCard)}
+							>
+								{getKeywords(tarotCard)}
+							</span>
 							<div
-								class:showReading={selectedCard && selectedCard.id === tarotCard.id}
-								class="hidden"
+								class="hidden flex-col"
+								class:showReading={isSelected(tarotCard) && isReadingVisible}
 							>
 								<p class="mb-4">
-									Lorem ipsum odor amet, consectetuer adipiscing elit. Lacinia pellentesque feugiat
-									dis magna augue natoque torquent dis. Lorem ipsum odor amet, consectetuer
-									adipiscing elit. Lacinia pellentesque feugiat dis magna augue natoque torquent
-									dis.
+									The Fool upright signifies new beginnings, adventure, and a leap of faith. It’s a
+									card of spontaneity, encouraging you to take risks and trust the journey ahead,
+									even if the path seems uncertain.
 								</p>
 								<p class="mb-4">
-									Lorem ipsum odor amet, consectetuer adipiscing elit. Lacinia pellentesque feugiat
-									dis magna augue natoque torquent dis. Lorem ipsum odor amet, consectetuer
-									adipiscing elit. Lacinia pellentesque feugiat dis magna augue natoque torquent
-									dis.
+									Embrace the unknown with optimism and curiosity, free from fear or doubt. The Fool
+									reminds you to let go of past baggage and approach life with a fresh, open heart.
 								</p>
 								<p class="mb">
-									Lorem ipsum odor amet, consectetuer adipiscing elit. Lacinia pellentesque feugiat
-									dis magna augue natoque torquent dis. Lorem ipsum odor amet, consectetuer
-									adipiscing elit. Lacinia pellentesque feugiat dis magna augue natoque torquent
-									dis.
+									Now is the time to step into new experiences, trusting that the universe will
+									guide you as you venture into uncharted territory. Be brave—there’s growth and
+									excitement awaiting you.
 								</p>
 							</div>
 						</div>
@@ -522,7 +176,7 @@
 </div>
 
 <style>
-	.box {
+	.card {
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
@@ -547,16 +201,15 @@
 		overflow: auto;
 	}
 
-	.box:hover {
+	.card:hover {
 		border: 1px solid black;
-		animation: tilt-n-move-shaking 0.5s ease-in-out 0.5s;
 	}
 
-	.box span {
+	.card span {
 		transition: transform 0.3s ease;
 	}
 
-	.box:hover span {
+	.card:hover span {
 		transform: none;
 	}
 
@@ -575,18 +228,18 @@
 
 		align-items: flex-start;
 		justify-content: flex-start;
+
+		animation: tilt-n-move-shaking 0.5s ease-in-out 1s;
+	}
+
+	.center span {
+		margin-bottom: 1rem;
 	}
 
 	@media (min-width: 768px) {
 		.center {
 			min-width: 450px;
 		}
-	}
-
-	.showReading {
-		display: flex;
-		flex-direction: column;
-		padding-top: 0.5rem;
 	}
 
 	.highlight {
@@ -601,18 +254,22 @@
 		content: '*';
 	}
 
+	.showReading {
+		display: flex;
+	}
+
 	@keyframes tilt-n-move-shaking {
 		0% {
 			transform: translate(-50%, -50%) rotate(0deg);
 		}
 		25% {
-			transform: translate(-50%, -50%) rotate(5deg);
+			transform: translate(-50%, -50%) rotate(2.5deg);
 		}
 		50% {
 			transform: translate(-50%, -50%) rotate(0deg);
 		}
 		75% {
-			transform: translate(-50%, -50%) rotate(-5deg);
+			transform: translate(-50%, -50%) rotate(-2.5deg);
 		}
 		100% {
 			transform: translate(-50%, -50%) rotate(0deg);
