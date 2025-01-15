@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { deck, type Card } from '$lib/deck';
+	import { formatTextIntoParagraphs } from '$lib/helpers';
 
 	let tarotDeck = deck;
 
@@ -123,30 +124,18 @@
 									?
 								{/if}
 							</span>
-							<span
-								class="hidden w-full justify-center text-center"
-								class:showReading={isSelected(tarotCard)}
-							>
+							<span class="hidden w-full" class:showReading={isSelected(tarotCard)}>
 								{getKeywords(tarotCard)}
 							</span>
 							<div
 								class="hidden flex-col"
 								class:showReading={isSelected(tarotCard) && isReadingVisible}
 							>
-								<p class="mb-4">
-									The Fool upright signifies new beginnings, adventure, and a leap of faith. It’s a
-									card of spontaneity, encouraging you to take risks and trust the journey ahead,
-									even if the path seems uncertain.
-								</p>
-								<p class="mb-4">
-									Embrace the unknown with optimism and curiosity, free from fear or doubt. The Fool
-									reminds you to let go of past baggage and approach life with a fresh, open heart.
-								</p>
-								<p class="mb">
-									Now is the time to step into new experiences, trusting that the universe will
-									guide you as you venture into uncharted territory. Be brave—there’s growth and
-									excitement awaiting you.
-								</p>
+								{#if tarotCard.isUpright}
+									{@html formatTextIntoParagraphs(tarotCard.description.upright)}
+								{:else}
+									{@html formatTextIntoParagraphs(tarotCard.description.reversed)}
+								{/if}
 							</div>
 						</div>
 						<div class="hidden" class:visible={selectedCard === tarotCard}></div>
