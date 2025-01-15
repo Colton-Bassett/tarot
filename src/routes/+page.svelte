@@ -4,6 +4,7 @@
 	import { flip } from 'svelte/animate';
 	import { deck, type Card } from '$lib/deck';
 	import { formatTextIntoParagraphs } from '$lib/helpers';
+	import TypeWriter from 'svelte-typewriter';
 
 	let tarotDeck = $state(deck);
 
@@ -23,8 +24,9 @@
 	}
 
 	let selectedCard: Card | null = $state(null);
-	let pickPreviewCard: Card | null = null;
+	let pickPreviewCard: Card | null = $state(null);
 	let isReadingVisible: boolean | undefined = $state();
+	let typeWriterOn: boolean | undefined = $state(true);
 
 	function selectCard(tarotCard: Card) {
 		if (isSelected(tarotCard)) {
@@ -100,8 +102,9 @@
 <svelte:window onkeydown={handleEscPress} onclick={handleClickOutside} />
 
 <div class="flex flex-col items-center justify-center">
-	<h1>Welcome to SvelteKit</h1>
-	<div class="flex max-w-5xl flex-col-reverse lg:flex-col">
+	<TypeWriter><h1>Welcome to cb.tarot</h1></TypeWriter>
+
+	<div class="flex min-h-[972px] max-w-5xl flex-col-reverse lg:flex-col">
 		<div class="">
 			<div class="my-6 grid grid-cols-3 gap-2 md:grid-cols-6 lg:grid-cols-[repeat(10,_1fr)]">
 				{#each tarotDeck as tarotCard (tarotCard)}
@@ -133,10 +136,22 @@
 								class="hidden flex-col"
 								class:showReading={isSelected(tarotCard) && isReadingVisible}
 							>
-								{#if tarotCard.isUpright}
-									{@html formatTextIntoParagraphs(tarotCard.description.upright)}
-								{:else}
-									{@html formatTextIntoParagraphs(tarotCard.description.reversed)}
+								{#if isReadingVisible}
+									{#if typeWriterOn}
+										<TypeWriter mode="cascade">
+											{@html formatTextIntoParagraphs(
+												tarotCard.isUpright
+													? tarotCard.description.upright
+													: tarotCard.description.reversed
+											)}
+										</TypeWriter>
+									{:else}
+										{@html formatTextIntoParagraphs(
+											tarotCard.isUpright
+												? tarotCard.description.upright
+												: tarotCard.description.reversed
+										)}
+									{/if}
 								{/if}
 							</div>
 						</div>
@@ -151,9 +166,9 @@
 					<button class="border border-gray-500 px-6 py-1 lowercase" onclick={shuffleDeck}
 						>Shuffle</button
 					>
-					<button class="border border-gray-500 px-6 py-1 lowercase" onclick={toggleFlip}
+					<!-- <button class="border border-gray-500 px-6 py-1 lowercase" onclick={toggleFlip}
 						>Flip</button
-					>
+					> -->
 				</div>
 				<button class="border border-gray-500 px-6 py-1 lowercase" onclick={randomlyPickCard}
 					>Pick</button

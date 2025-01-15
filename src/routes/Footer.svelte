@@ -6,13 +6,13 @@
 	<nav class="m-auto">
 		<ul class="flex gap-6">
 			<li class="flex h-16 items-center">
-				<a href="/">home</a>
+				<a href="/">settings</a>
 			</li>
 			<li class="flex h-16 items-center">
 				<a href="/disclaimer">disclaimer</a>
 			</li>
 			<li class="flex h-16 items-center">
-				<a href="https://github.com/sveltejs/kit">gh</a>
+				<a href="https://github.com/sveltejs/kit">github</a>
 			</li>
 		</ul>
 	</nav>
