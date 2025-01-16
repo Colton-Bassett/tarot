@@ -1,5 +1,28 @@
 <svelte:options runes />
 
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	// svelte:window events
+
+	function handleKeyPress(event: KeyboardEvent) {
+		if (event.key === 'd') {
+			goto('/disclaimer');
+		}
+		if (event.key === 'g') {
+			window.open('https://github.com/sveltejs/kit', '_blank');
+		}
+		if (event.key === 'h') {
+			goto('/');
+		}
+		if (event.key === 's') {
+			goto('/');
+			alert('settings!');
+		}
+	}
+</script>
+
+<svelte:window onkeydown={handleKeyPress} />
+
 <svelte:head>
 	<title>Disclaimer</title>
 	<meta name="description" content="About this app" />

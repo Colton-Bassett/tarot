@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import { flip } from 'svelte/animate';
+	import { goto } from '$app/navigation';
 	import { deck, type Card } from '$lib/deck';
 	import { formatTextIntoParagraphs } from '$lib/helpers';
 	import TypeWriter from 'svelte-typewriter';
@@ -77,10 +78,28 @@
 	}
 
 	// svelte:window events
-	function handleEscPress(event: KeyboardEvent) {
+	function handleKeyPress(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
 			selectedCard = null;
 			isReadingVisible = false;
+		}
+		if (event.key === 'd') {
+			goto('/disclaimer');
+		}
+		if (event.key === 'g') {
+			window.open('https://github.com/sveltejs/kit', '_blank');
+		}
+		if (event.key === 'h') {
+			goto('/');
+		}
+		if (event.key === 'p') {
+			randomlyPickCard();
+		}
+		if (event.key === 's') {
+			alert('settings!');
+		}
+		if (event.key === 'x') {
+			shuffleDeck();
 		}
 	}
 
@@ -99,7 +118,7 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<svelte:window onkeydown={handleEscPress} onclick={handleClickOutside} />
+<svelte:window onkeydown={handleKeyPress} onclick={handleClickOutside} />
 
 <div class="flex flex-col items-center justify-center">
 	<TypeWriter><h1 class="welcome">Welcome to cb.tarot</h1></TypeWriter>
