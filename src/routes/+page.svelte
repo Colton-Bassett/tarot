@@ -10,8 +10,8 @@
 	let tarotDeck = $state(deck);
 	let showCardFront: boolean = $state(true);
 	let selectedCard: Card | null = $state(null);
-	let isReadingVisible: boolean | undefined = $state();
-	let typeWriterOn: boolean | undefined = $state(true);
+	let isReadingVisible: boolean | undefined = $state(true);
+	let typeWriterOn: boolean | undefined = $state(false);
 
 	function shuffleDeck() {
 		// shuffle
@@ -102,87 +102,97 @@
 <svelte:window onkeydown={handleKeyPress} onclick={handleClickOutside} />
 
 <div class="flex flex-col items-center justify-center">
-	<TypeWriter><h1 class="welcome">Welcome to cb.tarot</h1></TypeWriter>
+	<div class="min-h-20">
+		<TypeWriter mode="cascade">
+			<div class="mb-4 flex flex-col items-center justify-center">
+				<h1 class="mb-4">Welcome to cb.tarot</h1>
+				<p class="text-center">
+					Choose a card and get insight. A simple, focused reading for today.
+				</p>
+			</div>
+		</TypeWriter>
+	</div>
 
 	<div class="flex min-h-[972px] max-w-5xl flex-col-reverse lg:flex-col">
-		<div class="">
-			<div class="my-6 grid grid-cols-3 gap-2 md:grid-cols-6 lg:grid-cols-[repeat(10,_1fr)]">
-				{#each tarotDeck as tarotCard (tarotCard)}
-					<div animate:flip={{ duration: 500 }}>
-						<div
-							class="card"
-							class:center={isSelected(tarotCard)}
-							onclick={() => selectCard(tarotCard)}
-							onkeydown={(e) => {}}
-							tabindex="0"
-							role="button"
-							aria-label="Tarot card"
-						>
-							{#if showCardFront}
-								<span
-									class="pointer-events-none w-full text-center"
-									class:reversed={!tarotCard.isUpright && showCardFront}
-									>{tarotCard.name}
-								</span>
-							{:else}
-								<div class="cardbg">
-									{#each Array(9) as _, index}
-										<div class="flex items-center justify-center">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke-width="1.5"
-												stroke="currentColor"
-												class="size-2"
-												style="transform: rotate({index * 45}deg);"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													d="M12 4.5v15m7.5-7.5h-15"
-												/>
-											</svg>
-										</div>
-									{/each}
-								</div>
-							{/if}
-
+		<div class="grid grid-cols-3 gap-2 md:grid-cols-6 lg:grid-cols-[repeat(10,_1fr)]">
+			{#each tarotDeck as tarotCard (tarotCard)}
+				<div animate:flip={{ duration: 500 }}>
+					<div
+						class="card"
+						class:center={isSelected(tarotCard)}
+						onclick={() => selectCard(tarotCard)}
+						onkeydown={(e) => {}}
+						tabindex="0"
+						role="button"
+						aria-label="Tarot card"
+					>
+						{#if showCardFront}
 							<span
-								class="hidden w-full"
-								class:showReading={isSelected(tarotCard) && isReadingVisible}
-							>
-								{getKeywords(tarotCard)}
+								class="pointer-events-none w-full text-center"
+								class:reversed={!tarotCard.isUpright && showCardFront}
+								>{tarotCard.name}
 							</span>
-							<div
-								class="hidden flex-col"
-								class:showReading={isSelected(tarotCard) && isReadingVisible}
-							>
-								{#if isReadingVisible}
-									{#if typeWriterOn}
-										<TypeWriter mode="cascade">
-											{@html formatTextIntoParagraphs(
-												tarotCard.isUpright
-													? tarotCard.description.upright
-													: tarotCard.description.reversed
-											)}
-										</TypeWriter>
-									{:else}
+						{:else}
+							<div class="cardbg">
+								{#each Array(9) as _, index}
+									<div class="flex items-center justify-center">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke-width="1.5"
+											stroke="currentColor"
+											class={isSelected(tarotCard) ? 'size-6' : 'size-2'}
+											style="transform: rotate({index * 45}deg);"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												d="M12 4.5v15m7.5-7.5h-15"
+											/>
+										</svg>
+									</div>
+								{/each}
+							</div>
+						{/if}
+
+						<div
+							class="hidden w-full gap-2"
+							class:showReading={isSelected(tarotCard) && isReadingVisible}
+						>
+							{#each getKeywords(tarotCard) as keyword}
+								<span class="mb-0">{keyword} </span>
+							{/each}
+						</div>
+						<div
+							class="hidden flex-col"
+							class:showReading={isSelected(tarotCard) && isReadingVisible}
+						>
+							{#if isReadingVisible}
+								{#if typeWriterOn}
+									<TypeWriter mode="cascade">
 										{@html formatTextIntoParagraphs(
 											tarotCard.isUpright
 												? tarotCard.description.upright
 												: tarotCard.description.reversed
 										)}
-									{/if}
+									</TypeWriter>
+								{:else}
+									{@html formatTextIntoParagraphs(
+										tarotCard.isUpright
+											? tarotCard.description.upright
+											: tarotCard.description.reversed
+									)}
 								{/if}
-							</div>
+							{/if}
 						</div>
-						<div class="hidden" class:visible={selectedCard === tarotCard}></div>
 					</div>
-				{/each}
-			</div>
+					<div class="hidden" class:visible={selectedCard === tarotCard}></div>
+				</div>
+			{/each}
 		</div>
-		<div class="max-w-5xl">
+
+		<div class="my-6 max-w-5xl">
 			<div class="flex flex-col justify-between md:flex-row">
 				<div class="flex justify-between">
 					<button class="button px-6 py-1 lowercase" onclick={shuffleDeck}>[x] shuffle</button>
@@ -192,9 +202,6 @@
 			</div>
 		</div>
 	</div>
-	<p class="mt-6 text-center">
-		Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation
-	</p>
 </div>
 
 <style>
@@ -213,6 +220,7 @@
 		min-height: 90px;
 
 		border: 1px solid #dedede;
+		border-radius: 2px;
 		background-color: white;
 		transition:
 			transform 0.3s ease-in-out,
@@ -226,7 +234,6 @@
 	}
 
 	.card:hover {
-		/* background-color: #1e1e1e11; */
 		border: 1px solid black;
 	}
 
@@ -245,12 +252,7 @@
 		height: 100%;
 		width: 100%;
 		pointer-events: none;
-	}
-
-	.cardbg svg {
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		border-radius: 2px;
 	}
 
 	.center {
@@ -261,19 +263,24 @@
 		z-index: 10;
 		min-width: 90%;
 		min-height: 500px;
-		font-size: 1.2em;
+		font-size: 1em;
 		padding: 1.5rem;
 
 		transition: all 0.3s ease-in-out;
 
-		align-items: flex-start;
 		justify-content: flex-start;
-
-		animation: tilt-n-move-shaking 0.5s ease-in-out 1s;
 	}
 
 	.center span {
 		margin-bottom: 1rem;
+	}
+
+	.center:hover {
+		animation: tilt-n-move-shaking 0.5s ease-in-out 1s;
+	}
+
+	.center .cardbg {
+		border: 1px solid #dedede;
 	}
 
 	@media (min-width: 768px) {
@@ -296,6 +303,9 @@
 
 	.showReading {
 		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
 	}
 
 	.button {
