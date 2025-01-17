@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { createBubbler } from 'svelte/legacy';
 	// svelte:window events
 
 	function handleKeyPress(event: KeyboardEvent) {
@@ -24,8 +25,8 @@
 <svelte:window onkeydown={handleKeyPress} />
 
 <svelte:head>
-	<title>Disclaimer</title>
-	<meta name="description" content="About this app" />
+	<title>cb.tarot - disclaimer</title>
+	<meta name="description" content="disclaimer" />
 </svelte:head>
 
 <div class="text-column">

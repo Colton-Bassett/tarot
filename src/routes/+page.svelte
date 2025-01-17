@@ -23,6 +23,11 @@
 		});
 	}
 
+	function resetDeck() {
+		tarotDeck = deck;
+		showCardFront = true;
+	}
+
 	function selectCard(tarotCard: Card) {
 		if (isSelected(tarotCard)) {
 			isReadingVisible = true;
@@ -68,6 +73,9 @@
 		if (event.key === 'p') {
 			pickCard();
 		}
+		if (event.key === 'r') {
+			resetDeck();
+		}
 		if (event.key === 's') {
 			alert('settings!');
 		}
@@ -110,16 +118,35 @@
 							role="button"
 							aria-label="Tarot card"
 						>
-							<span
-								class="pointer-events-none w-full text-center"
-								class:reversed={!tarotCard.isUpright && showCardFront}
-							>
-								{#if showCardFront}
-									{tarotCard.name}
-								{:else}
-									?
-								{/if}
-							</span>
+							{#if showCardFront}
+								<span
+									class="pointer-events-none w-full text-center"
+									class:reversed={!tarotCard.isUpright && showCardFront}
+									>{tarotCard.name}
+								</span>
+							{:else}
+								<div class="cardbg">
+									{#each Array(9) as _, index}
+										<div class="flex items-center justify-center">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke-width="1.5"
+												stroke="currentColor"
+												class="size-2"
+												style="transform: rotate({index * 45}deg);"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M12 4.5v15m7.5-7.5h-15"
+												/>
+											</svg>
+										</div>
+									{/each}
+								</div>
+							{/if}
 
 							<span
 								class="hidden w-full"
@@ -159,6 +186,7 @@
 			<div class="flex flex-col justify-between md:flex-row">
 				<div class="flex justify-between">
 					<button class="button px-6 py-1 lowercase" onclick={shuffleDeck}>[x] shuffle</button>
+					<button class="button px-6 py-1 lowercase" onclick={resetDeck}>[r] reset</button>
 				</div>
 				<button class="button px-6 py-1 lowercase" onclick={pickCard}>[p] pick</button>
 			</div>
@@ -208,6 +236,21 @@
 
 	.card:hover span {
 		transform: none;
+	}
+
+	.cardbg {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: repeat(3, 1fr);
+		height: 100%;
+		width: 100%;
+		pointer-events: none;
+	}
+
+	.cardbg svg {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.center {
