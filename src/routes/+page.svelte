@@ -1,13 +1,17 @@
 <svelte:options runes />
 
 <script lang="ts">
+	import TypeWriter from 'svelte-typewriter';
 	import { flip } from 'svelte/animate';
 	import { goto } from '$app/navigation';
 	import { deck, type Card } from '$lib/deck';
 	import { formatTextIntoParagraphs } from '$lib/helpers';
-	import TypeWriter from 'svelte-typewriter';
 
 	let tarotDeck = $state(deck);
+	let showCardFront: boolean = $state(true);
+	let selectedCard: Card | null = $state(null);
+	let isReadingVisible: boolean | undefined = $state();
+	let typeWriterOn: boolean | undefined = $state(true);
 
 	function shuffleDeck() {
 		// shuffle
@@ -19,37 +23,23 @@
 		});
 	}
 
-	let showCardFront: boolean = $state(true);
-	function toggleFlip() {
-		showCardFront = !showCardFront;
-	}
-
-	let selectedCard: Card | null = $state(null);
-	let pickPreviewCard: Card | null = $state(null);
-	let isReadingVisible: boolean | undefined = $state();
-	let typeWriterOn: boolean | undefined = $state(true);
-
 	function selectCard(tarotCard: Card) {
 		if (isSelected(tarotCard)) {
 			isReadingVisible = true;
+			showCardFront = true;
 			return;
 		}
 
 		selectedCard = tarotCard;
 	}
 
-	// comparison helpers
+	function pickCard() {
+		showCardFront = false;
+		shuffleDeck();
+	}
+
 	function isSelected(tarotCard: Card) {
 		return selectedCard && selectedCard.id === tarotCard.id;
-	}
-
-	function isHighlighted(tarotCard: Card) {
-		return pickPreviewCard && pickPreviewCard.id === tarotCard.id;
-	}
-
-	function getRandomCard() {
-		const randomIndex = Math.floor(Math.random() * tarotDeck.length);
-		return tarotDeck[randomIndex];
 	}
 
 	function getKeywords(tarotCard: Card) {
@@ -58,23 +48,6 @@
 		} else {
 			return tarotCard.keywords.reversed;
 		}
-	}
-
-	function randomlyPickCard() {
-		let cardCount = 0;
-
-		// pick and set a new previewCard every second
-		const interval = setInterval(() => {
-			if (cardCount < 5) {
-				pickPreviewCard = getRandomCard();
-				cardCount++;
-			} else {
-				clearInterval(interval);
-				if (pickPreviewCard) {
-					selectCard(pickPreviewCard);
-				}
-			}
-		}, 1000);
 	}
 
 	// svelte:window events
@@ -93,7 +66,7 @@
 			goto('/');
 		}
 		if (event.key === 'p') {
-			randomlyPickCard();
+			pickCard();
 		}
 		if (event.key === 's') {
 			alert('settings!');
@@ -107,14 +80,14 @@
 		// check if the clicked element has the class 'card'
 		if (!(event.target instanceof HTMLElement) || !event.target.classList.contains('card')) {
 			selectedCard = null;
-			pickPreviewCard = null;
+			// pickPreviewCard = null;
 			isReadingVisible = false;
 		}
 	}
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>cb.tarot - home</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
@@ -131,7 +104,6 @@
 						<div
 							class="card"
 							class:center={isSelected(tarotCard)}
-							class:highlight={isHighlighted(tarotCard)}
 							onclick={() => selectCard(tarotCard)}
 							onkeydown={(e) => {}}
 							tabindex="0"
@@ -140,7 +112,7 @@
 						>
 							<span
 								class="pointer-events-none w-full text-center"
-								class:reversed={!tarotCard.isUpright}
+								class:reversed={!tarotCard.isUpright && showCardFront}
 							>
 								{#if showCardFront}
 									{tarotCard.name}
@@ -148,7 +120,11 @@
 									?
 								{/if}
 							</span>
-							<span class="hidden w-full" class:showReading={isSelected(tarotCard)}>
+
+							<span
+								class="hidden w-full"
+								class:showReading={isSelected(tarotCard) && isReadingVisible}
+							>
 								{getKeywords(tarotCard)}
 							</span>
 							<div
@@ -182,16 +158,9 @@
 		<div class="max-w-5xl">
 			<div class="flex flex-col justify-between md:flex-row">
 				<div class="flex justify-between">
-					<button class="button border border-gray-500 px-6 py-1 lowercase" onclick={shuffleDeck}
-						>[x] shuffle</button
-					>
-					<!-- <button class="border border-gray-500 px-6 py-1 lowercase" onclick={toggleFlip}
-						>Flip</button
-					> -->
+					<button class="button px-6 py-1 lowercase" onclick={shuffleDeck}>[x] shuffle</button>
 				</div>
-				<button class="button border border-gray-500 px-6 py-1 lowercase" onclick={randomlyPickCard}
-					>[p] pick</button
-				>
+				<button class="button px-6 py-1 lowercase" onclick={pickCard}>[p] pick</button>
 			</div>
 		</div>
 	</div>
@@ -201,9 +170,6 @@
 </div>
 
 <style>
-	.welcome {
-	}
-
 	.card {
 		box-sizing: border-box;
 		display: flex;
@@ -232,6 +198,7 @@
 	}
 
 	.card:hover {
+		/* background-color: #1e1e1e11; */
 		border: 1px solid black;
 	}
 
@@ -289,7 +256,14 @@
 	}
 
 	.button {
+		border: 1px solid #dedede;
 		font-family: 'Inter Tight', sans-serif;
+	}
+
+	.button:hover {
+		border: 1px solid rgb(107 114 128 / var(--tw-border-opacity, 1));
+
+		backdrop-filter: blur(10px);
 	}
 
 	@keyframes tilt-n-move-shaking {
