@@ -6,12 +6,13 @@
 	import { goto } from '$app/navigation';
 	import { deck, type Card } from '$lib/deck';
 	import { formatTextIntoParagraphs } from '$lib/helpers';
+	import { fade } from 'svelte/transition';
 
 	let tarotDeck = $state(deck);
 	let showCardFront: boolean = $state(true);
 	let selectedCard: Card | null = $state(null);
 	let isReadingVisible: boolean | undefined = $state(true);
-	let typeWriterOn: boolean | undefined = $state(false);
+	let typeWriterOn: boolean | undefined = $state(true);
 
 	function shuffleDeck() {
 		// shuffle
@@ -45,6 +46,10 @@
 
 	function isSelected(tarotCard: Card) {
 		return selectedCard && selectedCard.id === tarotCard.id;
+	}
+
+	function closeCard() {
+		selectedCard = null;
 	}
 
 	function getKeywords(tarotCard: Card) {
@@ -127,11 +132,25 @@
 						aria-label="Tarot card"
 					>
 						{#if showCardFront}
-							<span
-								class="pointer-events-none w-full text-center"
-								class:reversed={!tarotCard.isUpright && showCardFront}
-								>{tarotCard.name}
-							</span>
+							<div
+								class="pointer-events-none flex w-full items-center justify-center"
+								transition:fade={{ duration: 500 }}
+							>
+								{#if tarotCard.isUpright && isSelected(tarotCard)}
+									<span>↑</span>
+								{/if}
+								{#if !tarotCard.isUpright && isSelected(tarotCard)}
+									<span>↓</span>
+								{/if}
+								<span
+									class="w-full text-center"
+									class:reversed={!tarotCard.isUpright && showCardFront}
+									>{tarotCard.name}
+								</span>
+								{#if isSelected(tarotCard)}
+									<span onclick={closeCard}>x</span>
+								{/if}
+							</div>
 						{:else}
 							<div class="cardbg">
 								{#each Array(9) as _, index}
@@ -157,7 +176,7 @@
 						{/if}
 
 						<div
-							class="hidden w-full gap-2"
+							class="mb-4 hidden w-full gap-2 border-b"
 							class:showReading={isSelected(tarotCard) && isReadingVisible}
 						>
 							{#each getKeywords(tarotCard) as keyword}
@@ -202,6 +221,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="hidden" class:overlay={selectedCard !== null}></div>
 </div>
 
 <style>
@@ -231,6 +251,7 @@
 		overflow: auto;
 
 		font-family: 'Inter', sans-serif;
+		z-index: 10;
 	}
 
 	.card:hover {
@@ -262,7 +283,7 @@
 		transform: translate(-50%, -50%);
 		z-index: 10;
 		min-width: 90%;
-		min-height: 500px;
+		min-height: 550px;
 		font-size: 1em;
 		padding: 1.5rem;
 
@@ -308,6 +329,10 @@
 		text-align: center;
 	}
 
+	.showArrow {
+		display: flex;
+	}
+
 	.button {
 		border: 1px solid #dedede;
 		font-family: 'Inter Tight', sans-serif;
@@ -317,6 +342,17 @@
 		border: 1px solid rgb(107 114 128 / var(--tw-border-opacity, 1));
 
 		backdrop-filter: blur(10px);
+	}
+
+	.overlay {
+		display: flex;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		/* background: rgba(193, 193, 193, 0.5); */
+		backdrop-filter: blur(5px);
 	}
 
 	@keyframes tilt-n-move-shaking {
