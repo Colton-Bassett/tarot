@@ -2,9 +2,7 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createBubbler } from 'svelte/legacy';
 	// svelte:window events
-
 	function handleKeyPress(event: KeyboardEvent) {
 		if (event.key === 'd') {
 			goto('/disclaimer');
@@ -18,6 +16,33 @@
 		if (event.key === 's') {
 			goto('/');
 			alert('settings!');
+		}
+	}
+
+	type PokemonData = {
+		name: string;
+		id: number;
+		types: string[];
+	} | null;
+
+	let pokemon = $state<PokemonData>(null);
+	let error = $state<string | null>(null);
+
+	async function fetchBulbasaur() {
+		try {
+			const response = await fetch('/api/pokemon', {
+				method: 'POST'
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch Bulbasaur');
+			}
+
+			pokemon = await response.json();
+			error = null;
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'An error occurred';
+			pokemon = null;
 		}
 	}
 </script>
@@ -49,4 +74,25 @@
 		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
 		using it with JavaScript disabled!
 	</p>
+
+	<button class="my-5 rounded-md border p-4" onclick={fetchBulbasaur}> Fetch Bulbasaur </button>
+
+	{#if error}
+		<p class="error">{error}</p>
+	{/if}
+
+	{#if pokemon}
+		<div class="pokemon-card">
+			<h2>{pokemon.name}</h2>
+			<p>ID: {pokemon.id}</p>
+			<div class="types">
+				<h3>Types:</h3>
+				<ul>
+					{#each pokemon.types as type}
+						<li>{type}</li>
+					{/each}
+				</ul>
+			</div>
+		</div>
+	{/if}
 </div>

@@ -12,6 +12,11 @@ export interface Card {
 	};
 }
 
+export interface TempType {
+	name: string;
+	id: number;
+}
+
 export const deck: Card[] = [
 	{
 		id: 1,
