@@ -19,30 +19,37 @@
 		}
 	}
 
-	type PokemonData = {
-		name: string;
-		id: number;
-		types: string[];
-	} | null;
+	let prompt = $state<string>('');
+	let response = $state<string>('');
+	let loading = $state<boolean>(false);
 
-	let pokemon = $state<PokemonData>(null);
-	let error = $state<string | null>(null);
+	async function fetchGPTResponse() {
+		if (!prompt.trim()) {
+			alert('Please enter a prompt.');
+			return;
+		}
 
-	async function fetchBulbasaur() {
+		loading = true;
 		try {
-			const response = await fetch('/api/pokemon', {
-				method: 'POST'
+			const res = await fetch('/api/gpt', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ prompt })
 			});
 
-			if (!response.ok) {
-				throw new Error('Failed to fetch Bulbasaur');
+			if (!res.ok) {
+				const errorData = await res.json();
+				throw new Error(errorData.error || 'Something went wrong.');
 			}
 
-			pokemon = await response.json();
-			error = null;
-		} catch (e) {
-			error = e instanceof Error ? e.message : 'An error occurred';
-			pokemon = null;
+			const data = await res.json();
+			response = data.message;
+		} catch (error: any) {
+			response = `Error: ${error.message}`;
+		} finally {
+			loading = false;
 		}
 	}
 </script>
@@ -75,24 +82,23 @@
 		using it with JavaScript disabled!
 	</p>
 
-	<button class="my-5 rounded-md border p-4" onclick={fetchBulbasaur}> Fetch Bulbasaur </button>
+	<div class="flex max-w-96 flex-col">
+		<h1 class="my-4 font-bold uppercase">Ask GPT-4</h1>
+		<textarea
+			class="rounded-md border"
+			bind:value={prompt}
+			placeholder="Type your question here..."
+			rows="4"
+			cols="50"
+		></textarea>
 
-	{#if error}
-		<p class="error">{error}</p>
-	{/if}
+		<button class="mt-4 rounded-md border p-4" onclick={fetchGPTResponse} disabled={loading}>
+			{loading ? 'Thinking...' : 'Ask GPT-4'}
+		</button>
 
-	{#if pokemon}
-		<div class="pokemon-card">
-			<h2>{pokemon.name}</h2>
-			<p>ID: {pokemon.id}</p>
-			<div class="types">
-				<h3>Types:</h3>
-				<ul>
-					{#each pokemon.types as type}
-						<li>{type}</li>
-					{/each}
-				</ul>
-			</div>
-		</div>
-	{/if}
+		{#if response}
+			<h2>Response:</h2>
+			<p>{response}</p>
+		{/if}
+	</div>
 </div>
