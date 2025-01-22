@@ -1,6 +1,6 @@
 import { json, error } from '@sveltejs/kit';
 import { OPENAI_API_KEY } from '$env/static/private';
-import { RateLimiter } from '$lib/rateLimiter.js';
+import { RateLimiter } from '$lib/utils.js';
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 

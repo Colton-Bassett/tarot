@@ -1,21 +1,4 @@
-export interface Card {
-	id: number;
-	name: string;
-	isUpright: boolean;
-	description: {
-		upright: string;
-		reversed: string;
-	};
-	keywords: {
-		upright: string[];
-		reversed: string[];
-	};
-}
-
-export interface TempType {
-	name: string;
-	id: number;
-}
+import type { Card } from './types';
 
 export const deck: Card[] = [
 	{

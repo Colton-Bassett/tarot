@@ -2,22 +2,6 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	// svelte:window events
-	function handleKeyPress(event: KeyboardEvent) {
-		if (event.key === 'd') {
-			goto('/disclaimer');
-		}
-		if (event.key === 'g') {
-			window.open('https://github.com/sveltejs/kit', '_blank');
-		}
-		if (event.key === 'h') {
-			goto('/');
-		}
-		if (event.key === 's') {
-			goto('/');
-			alert('settings!');
-		}
-	}
 
 	let prompt = $state<string>('');
 	let response = $state<string>('');
@@ -51,6 +35,19 @@
 		} finally {
 			loading = false;
 		}
+	}
+
+	// keyboard shortcuts handler
+	function handleKeyPress(event: KeyboardEvent) {
+		const shortcuts: Record<string, () => void> = {
+			d: () => goto('/disclaimer'),
+			g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
+			h: () => goto('/'),
+
+			s: () => alert('settings!')
+		};
+
+		shortcuts[event.key]?.();
 	}
 </script>
 
