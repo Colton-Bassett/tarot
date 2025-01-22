@@ -12,33 +12,35 @@
 	export let isReadingVisible: boolean;
 	export let typeWriterOn: boolean;
 	export let onSelect: (card: Card) => void;
+	export let onClose: () => void;
 </script>
 
 <div
 	class="card"
 	class:center={isSelected}
-	on:click={() => onSelect(card)}
-	on:keydown={() => {}}
+	class:cursor={isSelected && isReadingVisible}
+	onclick={() => onSelect(card)}
+	onkeydown={() => {}}
 	tabindex="0"
 	role="button"
 	aria-label="Tarot card"
 >
 	{#if showFront}
-		<div
-			class="pointer-events-none flex w-full items-center justify-center"
-			transition:fade={{ duration: 500 }}
-		>
-			{#if card.isUpright && isSelected}
-				<span>↑</span>
-			{/if}
-			{#if !card.isUpright && isSelected}
-				<span>↓</span>
+		<div class="cardHeader" transition:fade={{ duration: 500 }}>
+			{#if isSelected}
+				<span class="flex w-10 items-center justify-center">{card.isUpright ? '↑' : '↓'} </span>
 			{/if}
 			<span class="w-full text-center" class:reversed={!card.isUpright && showFront}>
 				{card.name}
 			</span>
 			{#if isSelected}
-				<span>x</span>
+				<button
+					class="closeButton flex w-10 items-center justify-center"
+					onclick={(e) => {
+						e.stopPropagation();
+						onClose();
+					}}>x</button
+				>
 			{/if}
 		</div>
 	{:else}
@@ -46,10 +48,12 @@
 	{/if}
 
 	{#if isSelected && isReadingVisible}
-		<div class="mb-4 flex w-full items-center justify-center gap-2 border-b text-center">
-			{#each getKeywords(card) as keyword}
-				<span class="mb-0">{keyword}</span>
-			{/each}
+		<div class="mb-4 border-b">
+			<div class=" mb-4 flex w-full items-center justify-center gap-2 text-center">
+				{#each getKeywords(card) as keyword}
+					<span class="mb-0">{keyword}</span>
+				{/each}
+			</div>
 		</div>
 		<div class="flex-col items-center justify-center text-center">
 			{#if typeWriterOn}
@@ -106,6 +110,17 @@
 		transform: none;
 	}
 
+	.cardHeader {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+	}
+
+	.closeButton:hover {
+		text-decoration: underline;
+	}
+
 	.center {
 		position: absolute;
 		top: 50%;
@@ -120,12 +135,16 @@
 		transition: all 0.3s ease-in-out;
 	}
 
-	.center span {
+	.center .cardHeader {
 		margin-bottom: 1rem;
 	}
 
 	.center:hover {
 		animation: tilt-n-move-shaking 0.5s ease-in-out 1s;
+	}
+
+	.cursor {
+		cursor: default;
 	}
 
 	/* .center .cardbg {

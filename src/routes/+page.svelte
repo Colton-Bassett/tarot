@@ -13,25 +13,30 @@
 	let tarotDeck = $state(deck);
 	let selectedCard: Card | null = $state(null);
 	let showCardFront = $state(true);
-	let isReadingVisible = $state(true);
+	let isReadingVisible = $state(false);
 	let typeWriterOn = $state(true);
 
 	let readingType: ReadingType = $state('general');
 	let cardBackType: CardBackType = $state('plus');
-	let uprightType: OrientationType = $state('both');
+	let orientationType: OrientationType = $state('both');
 
 	function handleCardSelect(card: Card) {
-		if (selectedCard?.id === card.id) {
+		if (selectedCard?.id === card.id && isReadingVisible === true) {
+			console.log('toggling typewriter');
+			typeWriterOn = false;
+		} else if (selectedCard?.id === card.id) {
+			console.log('here is card');
 			isReadingVisible = true;
 			showCardFront = true;
 			return;
 		}
+		console.log('selectedCard = card');
 		selectedCard = card;
 	}
 
 	function pickCard() {
 		showCardFront = false;
-		tarotDeck = shuffleCards(tarotDeck);
+		tarotDeck = shuffleCards(tarotDeck, orientationType);
 	}
 
 	function resetDeck() {
@@ -39,12 +44,24 @@
 		showCardFront = true;
 	}
 
+	function closeCard() {
+		selectedCard = null;
+		isReadingVisible = false;
+		typeWriterOn = true;
+	}
+
+	function updateOrientationType() {
+		const types = ['both', 'upright', 'reversed'] as const;
+		const currentIndex = types.indexOf(orientationType);
+		orientationType = types[(currentIndex + 1) % types.length];
+		shuffleCards(tarotDeck, orientationType);
+	}
+
 	// keyboard shortcuts handler
 	function handleKeyPress(event: KeyboardEvent) {
 		const shortcuts: Record<string, () => void> = {
 			Escape: () => {
-				selectedCard = null;
-				isReadingVisible = false;
+				closeCard();
 			},
 			d: () => goto('/disclaimer'),
 			g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
@@ -53,18 +70,11 @@
 			r: resetDeck,
 			s: () => alert('settings!'),
 			x: () => {
-				tarotDeck = shuffleCards(tarotDeck);
+				tarotDeck = shuffleCards(tarotDeck, orientationType);
 			}
 		};
 
 		shortcuts[event.key]?.();
-	}
-
-	function handleClickOutside(event: MouseEvent) {
-		if (!(event.target instanceof HTMLElement) || !event.target.classList.contains('card')) {
-			selectedCard = null;
-			isReadingVisible = false;
-		}
 	}
 </script>
 
@@ -73,7 +83,7 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<svelte:window on:keydown={handleKeyPress} on:click={handleClickOutside} />
+<svelte:window onkeydown={handleKeyPress} />
 
 <div class="flex flex-col items-center justify-center">
 	<div class="min-h-20">
@@ -98,6 +108,7 @@
 						{isReadingVisible}
 						{typeWriterOn}
 						onSelect={handleCardSelect}
+						onClose={closeCard}
 					/>
 				</div>
 			{/each}
@@ -105,14 +116,8 @@
 
 		<div class="my-6 max-w-5xl">
 			<div class="mb-4 flex flex-row-reverse gap-8">
-				<button
-					onclick={() => {
-						const types = ['both', 'upright', 'reversed'] as const;
-						const currentIndex = types.indexOf(uprightType);
-						uprightType = types[(currentIndex + 1) % types.length];
-					}}
-				>
-					{uprightType === 'both' ? '↑ / ↓' : uprightType === 'upright' ? '↑' : '↓'}
+				<button onclick={updateOrientationType} class="settingsButton min-w-10">
+					{orientationType === 'both' ? '↑ / ↓' : orientationType === 'upright' ? '↑' : '↓'}
 				</button>
 				<button
 					onclick={() => {
@@ -120,6 +125,7 @@
 						const currentIndex = types.indexOf(readingType);
 						readingType = types[(currentIndex + 1) % types.length];
 					}}
+					class="settingsButton min-w-16"
 				>
 					{readingType}
 				</button>
@@ -129,6 +135,7 @@
 						const currentIndex = types.indexOf(cardBackType);
 						cardBackType = types[(currentIndex + 1) % types.length];
 					}}
+					class="settingsButton min-w-12"
 				>
 					{cardBackType}
 				</button>
@@ -138,7 +145,7 @@
 					<button
 						class="button px-6 py-1"
 						onclick={() => {
-							tarotDeck = shuffleCards(tarotDeck);
+							tarotDeck = shuffleCards(tarotDeck, orientationType);
 						}}
 					>
 						[x] shuffle
@@ -149,10 +156,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="hidden" class:overlay={selectedCard !== null}></div>
+	<div class="hidden" class:overlay={selectedCard !== null} onclick={closeCard}></div>
 </div>
 
 <style>
+	.settingsButton:hover {
+		text-decoration: underline;
+	}
+
 	.button {
 		border: 1px solid #dedede;
 		font-family: 'Inter Tight', sans-serif;

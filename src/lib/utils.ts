@@ -1,11 +1,31 @@
 import type { Card } from './types';
+import type { OrientationType } from './constants';
 
-export function shuffleCards(cards: Card[]): Card[] {
+export function shuffleCards(cards: Card[], orientationType: OrientationType): Card[] {
 	const shuffled = [...cards].sort(() => (Math.random() > 0.5 ? 1 : -1));
 
-	shuffled.forEach((card) => {
-		card.isUpright = Math.random() < 0.5;
-	});
+	switch (orientationType) {
+		case 'both':
+			shuffled.forEach((card) => {
+				card.isUpright = Math.random() < 0.5;
+			});
+			break;
+		case 'upright':
+			shuffled.forEach((card) => {
+				card.isUpright = true;
+			});
+			break;
+		case 'reversed':
+			shuffled.forEach((card) => {
+				card.isUpright = false;
+			});
+			break;
+		default:
+			shuffled.forEach((card) => {
+				card.isUpright = Math.random() < 0.5;
+			});
+	}
+
 	return shuffled;
 }
 
