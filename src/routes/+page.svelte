@@ -14,6 +14,10 @@
 	let isReadingVisible: boolean | undefined = $state(true);
 	let typeWriterOn: boolean | undefined = $state(true);
 
+	let readingType: string = $state('general');
+	let cardBackType: string = $state('plus');
+	let uprightType: string = $state('both');
+
 	function shuffleDeck() {
 		// shuffle
 		tarotDeck = tarotDeck.sort(() => (Math.random() > 0.5 ? 1 : -1));
@@ -97,6 +101,52 @@
 			isReadingVisible = false;
 		}
 	}
+
+	const updateReadingType = () => {
+		switch (readingType) {
+			case 'general':
+				readingType = 'romance';
+				break;
+			case 'romance':
+				readingType = 'finance';
+				break;
+			case 'finance':
+				readingType = 'career';
+				break;
+			case 'career':
+				readingType = 'general';
+				break;
+		}
+	};
+
+	const updateCardBackType = () => {
+		switch (cardBackType) {
+			case 'plus':
+				cardBackType = 'minus';
+				break;
+			case 'minus':
+				cardBackType = 'ohs';
+				break;
+			case 'ohs':
+				cardBackType = 'plus';
+				break;
+		}
+	};
+
+	const updateUprightType = () => {
+		console.log(uprightType);
+		switch (uprightType) {
+			case 'both':
+				uprightType = 'upright';
+				break;
+			case 'upright':
+				uprightType = 'reversed';
+				break;
+			case 'reversed':
+				uprightType = 'both';
+				break;
+		}
+	};
 </script>
 
 <svelte:head>
@@ -148,7 +198,7 @@
 									>{tarotCard.name}
 								</span>
 								{#if isSelected(tarotCard)}
-									<span onclick={closeCard}>x</span>
+									<span>x</span>
 								{/if}
 							</div>
 						{:else}
@@ -212,6 +262,13 @@
 		</div>
 
 		<div class="my-6 max-w-5xl">
+			<div class="mb-4 flex flex-row-reverse gap-8">
+				<button onclick={updateUprightType}>
+					{uprightType === 'both' ? '↑ / ↓' : uprightType === 'upright' ? '↑' : '↓'}
+				</button>
+				<button onclick={updateReadingType}>{readingType}</button>
+				<button onclick={updateCardBackType}>{cardBackType}</button>
+			</div>
 			<div class="flex flex-col justify-between md:flex-row">
 				<div class="flex justify-between">
 					<button class="button px-6 py-1 lowercase" onclick={shuffleDeck}>[x] shuffle</button>
@@ -310,9 +367,9 @@
 		}
 	}
 
-	.highlight {
+	/* .highlight {
 		border: 2px solid black;
-	}
+	} */
 
 	.visible {
 		display: flex;
@@ -327,10 +384,6 @@
 		justify-content: center;
 		align-items: center;
 		text-align: center;
-	}
-
-	.showArrow {
-		display: flex;
 	}
 
 	.button {
