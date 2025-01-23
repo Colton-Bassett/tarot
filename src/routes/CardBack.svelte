@@ -2,7 +2,7 @@
 	export let isSelected = false;
 </script>
 
-<div class="cardbg">
+<div class="cardBg" class:bgBorder={isSelected}>
 	{#each Array(9) as _, index}
 		<div class="flex items-center justify-center">
 			<svg
@@ -21,7 +21,7 @@
 </div>
 
 <style>
-	.cardbg {
+	.cardBg {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		grid-template-rows: repeat(3, 1fr);
@@ -29,5 +29,9 @@
 		width: 100%;
 		border-radius: 2px;
 		pointer-events: none;
+	}
+
+	.bgBorder {
+		border: 1px solid #dedede;
 	}
 </style>

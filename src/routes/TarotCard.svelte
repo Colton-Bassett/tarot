@@ -18,6 +18,7 @@
 <div
 	class="card"
 	class:center={isSelected}
+	class:shakeAnimation={isSelected && !isReadingVisible}
 	class:cursor={isSelected && isReadingVisible}
 	onclick={() => onSelect(card)}
 	onkeydown={() => {}}
@@ -26,7 +27,7 @@
 	aria-label="Tarot card"
 >
 	{#if showFront}
-		<div class="cardHeader" transition:fade={{ duration: 500 }}>
+		<div class="cardHeader" transition:fade={{ duration: showFront ? 500 : 0 }}>
 			{#if isSelected}
 				<span class="flex w-10 items-center justify-center">{card.isUpright ? '↑' : '↓'} </span>
 			{/if}
@@ -90,24 +91,13 @@
 		font-family: 'Inter', sans-serif;
 		font-size: 0.875em;
 		font-weight: 300;
-		transition:
-			transform 0.3s ease-in-out,
-			z-index 0.3s ease-in-out,
-			border 0.15s ease;
+		transition: transform 0.3s ease-in-out;
 		cursor: pointer;
 		z-index: 10;
 	}
 
 	.card:hover {
 		border: 1px solid black;
-	}
-
-	.card span {
-		transition: transform 0.3s ease;
-	}
-
-	.card:hover span {
-		transform: none;
 	}
 
 	.cardHeader {
@@ -138,18 +128,13 @@
 	.center .cardHeader {
 		margin-bottom: 1rem;
 	}
-
-	.center:hover {
-		animation: tilt-n-move-shaking 0.5s ease-in-out 1s;
-	}
-
 	.cursor {
 		cursor: default;
 	}
 
-	/* .center .cardbg {
-		border: 1px solid #dedede;
-	} */
+	.shakeAnimation:hover {
+		animation: tilt-n-move-shaking 0.5s ease-in-out 1s;
+	}
 
 	.reversed::after {
 		content: '*';
