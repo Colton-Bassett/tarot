@@ -75,8 +75,8 @@
 	</p>
 
 	<p>
-		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
-		using it with JavaScript disabled!
+		The Sverdle page illustrates SvelteKit's data loading and form handling. Try using it with
+		JavaScript disabled!
 	</p>
 
 	<div class="flex max-w-96 flex-col">
