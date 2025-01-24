@@ -41,7 +41,7 @@ export const POST = async ({ request, getClientAddress }) => {
 			body: JSON.stringify({
 				model: 'gpt-4o-mini',
 				messages: [{ role: 'user', content: prompt }],
-				max_tokens: 150,
+				max_tokens: 140,
 				temperature: 0.7
 			})
 		});

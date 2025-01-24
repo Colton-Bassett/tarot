@@ -16,6 +16,8 @@
 	let isReadingVisible = $state(false);
 	let typeWriterOn = $state(true);
 
+	let aiReadingAvailable = $state(false);
+
 	let readingType: ReadingType = $state('general');
 	let cardBackType: CardBackType = $state('plus');
 	let orientationType: OrientationType = $state('both');
@@ -89,8 +91,8 @@
 	<div class="min-h-20">
 		<TypeWriter mode="cascade">
 			<div class="mb-4 flex flex-col items-center justify-center">
-				<h1 class="mb-4">Welcome to cb.tarot</h1>
-				<p class="text-center">
+				<h1 class="mb-4 text-3xl font-bold">Welcome to cb.tarot</h1>
+				<p class="text-center text-[#6d6d6d]">
 					Choose a card and get insight. A simple, focused reading for today.
 				</p>
 			</div>
@@ -107,6 +109,7 @@
 						isSelected={selectedCard?.id === card.id}
 						{isReadingVisible}
 						{typeWriterOn}
+						{aiReadingAvailable}
 						onSelect={handleCardSelect}
 						onClose={closeCard}
 					/>
@@ -160,13 +163,18 @@
 </div>
 
 <style>
+	.settingsButton {
+		font-family: 'IBM Plex Mono', serif;
+	}
+
 	.settingsButton:hover {
 		text-decoration: underline;
 	}
 
 	.button {
 		border: 1px solid #dedede;
-		font-family: 'Inter Tight', sans-serif;
+		/* font-family: 'Inter Tight', sans-serif; */
+		font-family: 'IBM Plex Mono', serif;
 		text-transform: lowercase;
 	}
 

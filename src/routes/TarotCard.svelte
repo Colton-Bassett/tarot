@@ -6,13 +6,93 @@
 	import { getKeywords } from '../lib/utils';
 	import type { Card } from '../lib/types';
 
-	export let card: Card;
-	export let showFront: boolean;
-	export let isSelected: boolean;
-	export let isReadingVisible: boolean;
-	export let typeWriterOn: boolean;
-	export let onSelect: (card: Card) => void;
-	export let onClose: () => void;
+	let response = $state('');
+
+	let {
+		card,
+		showFront,
+		isSelected,
+		isReadingVisible,
+		typeWriterOn,
+		aiReadingAvailable,
+		onSelect,
+		onClose
+	}: {
+		card: Card;
+		showFront: boolean;
+		isSelected: boolean;
+		isReadingVisible: boolean;
+		typeWriterOn: boolean;
+		aiReadingAvailable: boolean;
+		onSelect: (card: Card) => void;
+		onClose: () => void;
+	} = $props();
+
+	let descriptionText = $derived(
+		aiReadingAvailable
+			? response
+			: card.isUpright
+				? card.description.upright
+				: card.description.reversed
+	);
+
+	// async function fetchGPTReading(card: Card) {
+	// 	const name = card.name;
+	// 	const orientation = card.isUpright ? 'upright' : 'reversed';
+
+	// 	try {
+	// 		const res = await fetch('/api/gpt', {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				'Content-Type': 'application/json'
+	// 			},
+	// 			body: JSON.stringify({
+	// 				prompt: 'Give me a one card tarot card reading for The ' + name + ', ' + orientation
+	// 			})
+	// 		});
+
+	// 		if (!res.ok) {
+	// 			const errorData = await res.json();
+	// 			throw new Error(errorData.error || 'Something went wrong');
+	// 		}
+
+	// 		const data = await res.json();
+	// 		response = data.message;
+	// 		console.log(response);
+	// 	} catch (error: any) {
+	// 		response = `Error: ${error.message}`;
+	// 	}
+	// }
+
+	async function fetchGPTReadingMock(card: Card, simulateError: boolean = false) {
+		if (aiReadingAvailable) {
+			const name = card.name;
+			const orientation = card.isUpright ? 'upright' : 'reversed';
+
+			// Simulate a 2-second delay
+			const mockResponse = `The ${name} ${orientation} represents emotional depth, intuition, and compassion. 
+  		In this position, she signifies a nurturing and caring energy, encouraging you to tap into your feelings and trust your intuition. 
+  		This card suggests that you may be called to support others, offering empathy and understanding. 
+  		It’s also a reminder to take care of your own emotional well-being and to create a harmonious environment around you. 
+  		The ${name} invites you to embrace your sensitivity and use it as a strength, fostering connections with others 
+  		and allowing your intuitive insights to guide you. Overall, it’s a positive sign of emotional fulfillment and the importance of self-care.`;
+
+			return new Promise<string>((resolve, reject) => {
+				setTimeout(() => {
+					if (simulateError) {
+						// Simulating an error condition
+						response = 'Mock Error: Something went wrong with the GPT request.';
+						reject(new Error('Mock Error: Something went wrong with the GPT request.'));
+					} else {
+						// Simulating a successful response
+						response = mockResponse;
+						resolve(mockResponse); // Return the mock response after a 2-second delay
+					}
+				}, 2000);
+				console.log(response);
+			});
+		}
+	}
 </script>
 
 <div
@@ -39,7 +119,8 @@
 					class="closeButton flex w-10 items-center justify-center"
 					onclick={(e) => {
 						e.stopPropagation();
-						onClose();
+						// onClose();
+						fetchGPTReadingMock(card);
 					}}>x</button
 				>
 			{/if}
@@ -58,15 +139,13 @@
 		</div>
 		<div class="flex-col items-center justify-center text-center">
 			{#if typeWriterOn}
-				<TypeWriter mode="cascade">
-					{@html formatTextIntoParagraphs(
-						card.isUpright ? card.description.upright : card.description.reversed
-					)}
-				</TypeWriter>
+				{#key response}
+					<TypeWriter mode="cascade">
+						{@html formatTextIntoParagraphs(descriptionText)}
+					</TypeWriter>
+				{/key}
 			{:else}
-				{@html formatTextIntoParagraphs(
-					card.isUpright ? card.description.upright : card.description.reversed
-				)}
+				{@html formatTextIntoParagraphs(descriptionText)}
 			{/if}
 		</div>
 	{/if}

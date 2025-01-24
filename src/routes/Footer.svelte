@@ -22,6 +22,7 @@
 
 <style>
 	footer {
-		font-family: 'Inter Tight', sans-serif;
+		/* font-family: 'Inter Tight', sans-serif; */
+		font-family: 'IBM Plex Mono', serif;
 	}
 </style>
