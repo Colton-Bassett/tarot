@@ -1,28 +1,9 @@
 import { json, error } from '@sveltejs/kit';
 import { OPENAI_API_KEY } from '$env/static/private';
-import { RateLimiter } from '$lib/utils.js';
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
-// 1 request per minute
-const rateLimiter = new RateLimiter(1);
-
-export const POST = async ({ request, getClientAddress }) => {
-	// Get client IP address
-	const clientIp = getClientAddress();
-
-	// Check rate limit
-	if (!rateLimiter.checkRateLimit(clientIp)) {
-		const resetTime = rateLimiter.getResetTime(clientIp);
-		throw error(429, {
-			message: 'Rate limit exceeded'
-			// headers: {
-			//     'Retry-After': String(Math.ceil((resetTime! - Date.now()) / 1000)),
-			//     'X-RateLimit-Remaining': String(rateLimiter.getRemainingRequests(clientIp))
-			// }
-		});
-	}
-
+export const POST = async ({ request }) => {
 	// Get the request data
 	const { prompt } = await request.json();
 
@@ -53,24 +34,14 @@ export const POST = async ({ request, getClientAddress }) => {
 		const data = await response.json();
 
 		// Send OpenAI response back to client
-		return json(
-			{
-				message: data.choices[0].message.content
-			},
-			{
-				headers: {
-					'X-RateLimit-Remaining': String(rateLimiter.getRemainingRequests(clientIp))
-				}
-			}
-		);
+		return json({
+			message: data.choices[0].message.content
+		});
 	} catch (err: any) {
 		return json(
 			{ error: err.message },
 			{
-				status: 500,
-				headers: {
-					'X-RateLimit-Remaining': String(rateLimiter.getRemainingRequests(clientIp))
-				}
+				status: 500
 			}
 		);
 	}

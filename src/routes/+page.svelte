@@ -16,7 +16,7 @@
 	let isReadingVisible = $state(false);
 	let typeWriterOn = $state(true);
 
-	let aiReadingAvailable = $state(false);
+	let aiReadingAvailable = $state(true);
 
 	let readingType: ReadingType = $state('general');
 	let cardBackType: CardBackType = $state('plus');
