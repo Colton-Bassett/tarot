@@ -65,7 +65,7 @@
 			Escape: () => {
 				closeCard();
 			},
-			d: () => goto('/disclaimer'),
+			a: () => goto('/about'),
 			g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
 			h: () => goto('/'),
 			p: pickCard,
@@ -88,10 +88,10 @@
 <svelte:window onkeydown={handleKeyPress} />
 
 <div class="flex flex-col items-center justify-center">
-	<div class="min-h-20">
+	<div class="min-h-24">
 		<TypeWriter mode="cascade">
 			<div class="mb-4 flex flex-col items-center justify-center">
-				<h1 class="mb-4 text-3xl font-bold">Welcome to cb.tarot</h1>
+				<h1 class="mb-4 text-center text-3xl font-bold">Welcome to cb.tarot</h1>
 				<p class="text-center text-[#6d6d6d]">
 					Choose a card and get insight. A simple, focused reading for today.
 				</p>
@@ -118,8 +118,8 @@
 		</div>
 
 		<div class="my-6 max-w-5xl">
-			<div class="mb-4 flex flex-row-reverse gap-8">
-				<button onclick={updateOrientationType} class="settingsButton min-w-10">
+			<div class="mb-4 flex flex-row-reverse justify-center gap-8 md:justify-start">
+				<button onclick={updateOrientationType} class="settingsButton min-w-12 underline-offset-2">
 					{orientationType === 'both' ? '↑ / ↓' : orientationType === 'upright' ? '↑' : '↓'}
 				</button>
 				<button
@@ -128,7 +128,7 @@
 						const currentIndex = types.indexOf(readingType);
 						readingType = types[(currentIndex + 1) % types.length];
 					}}
-					class="settingsButton min-w-16"
+					class="settingsButton min-w-[4.25rem] underline-offset-2"
 				>
 					{readingType}
 				</button>
@@ -138,7 +138,7 @@
 						const currentIndex = types.indexOf(cardBackType);
 						cardBackType = types[(currentIndex + 1) % types.length];
 					}}
-					class="settingsButton min-w-12"
+					class="settingsButton min-w-12 underline-offset-2"
 				>
 					{cardBackType}
 				</button>
@@ -180,7 +180,6 @@
 
 	.button:hover {
 		border: 1px solid rgb(107 114 128 / var(--tw-border-opacity, 1));
-		backdrop-filter: blur(10px);
 	}
 
 	.overlay {

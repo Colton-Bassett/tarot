@@ -40,7 +40,7 @@
 	// keyboard shortcuts handler
 	function handleKeyPress(event: KeyboardEvent) {
 		const shortcuts: Record<string, () => void> = {
-			d: () => goto('/disclaimer'),
+			a: () => goto('/about'),
 			g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
 			h: () => goto('/'),
 

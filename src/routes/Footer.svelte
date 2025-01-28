@@ -1,28 +1,32 @@
-<footer class="flex px-8">
-	<div class="corner flex h-16 items-center">
+<footer class="flex h-16 items-center justify-between px-8">
+	<button class="plexmono corner flex max-h-9 items-center">
 		<a href="/">cb.tarot</a>
+	</button>
+
+	<div class="flex items-center justify-center">
+		<span class="plexmono text-center text-xs font-normal text-[#aaa]"
+			>Copyright © 2025 cb.tarot.</span
+		>
 	</div>
-
-	<nav class="m-auto">
-		<ul class="flex gap-6">
-			<li class="flex h-16 items-center">
-				<a href="/">settings</a>
-			</li>
-			<li class="flex h-16 items-center">
-				<a href="/disclaimer">disclaimer</a>
-			</li>
-			<li class="flex h-16 items-center">
-				<a href="https://github.com/sveltejs/kit">github</a>
-			</li>
-		</ul>
-	</nav>
-
-	<!-- <div class="corner flex h-16 items-center"></div> -->
+	<button class="flex max-h-9 items-center">
+		<a href="https://github.com/sveltejs/kit" target="_blank">github</a>
+	</button>
 </footer>
 
 <style>
-	footer {
-		/* font-family: 'Inter Tight', sans-serif; */
+	.plexmono {
 		font-family: 'IBM Plex Mono', serif;
+	}
+
+	footer {
+		font-family: 'Inter Tight', sans-serif;
+	}
+	button {
+		padding: 5px 8px;
+		border-radius: 2px;
+	}
+
+	button:hover {
+		background-color: #1e1e1e11;
 	}
 </style>

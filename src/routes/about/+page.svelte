@@ -4,7 +4,7 @@
 	// keyboard shortcuts handler
 	function handleKeyPress(event: KeyboardEvent) {
 		const shortcuts: Record<string, () => void> = {
-			d: () => goto('/disclaimer'),
+			a: () => goto('/about'),
 			g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
 			h: () => goto('/'),
 
@@ -21,25 +21,107 @@
 	<title>cb.tarot - about</title>
 	<meta name="description" content="about" />
 </svelte:head>
+<div class="flex flex-col items-center justify-center">
+	<div class="mx-2 mb-24 flex min-h-[972px] max-w-4xl flex-col md:mx-6">
+		<div class="border-b pb-8">
+			<h1 class="">About cb.tarot</h1>
+			<h3 class="">
+				For daily guidance or simple curiosity, we offer a transparent one-card reading experience
+				that puts you in control.
+			</h3>
+		</div>
+		<div class="mb-3 mt-8">
+			<h2 class="mb-2">How it works:</h2>
 
-<div class="text-column">
-	<h1>About this app</h1>
+			<ul class="list-disc">
+				<li>
+					<span>One-Card Readings: </span>
+					Get your daily card pull with a simple, no-frills process. You can even shuffle the deck, reset
+					it, or choose between upright, reversed, or a mix of card orientations.
+				</li>
+				<li>
+					<span>AI-Powered Readings: </span>
+					Every day, you can receive a personalized tarot reading based on a topic of your choice — whether
+					that's general advice, career insights, romance, or financial guidance. Powered by ChatGPT,
+					these readings offer thoughtful, context-aware responses tailored to your preferences.
+				</li>
+				<li>
+					<span>Customization: </span>
+					Personalize your experience by choosing a unique cardback design to make the deck your own.
+				</li>
+			</ul>
+		</div>
+		<div class="mb-6">
+			<h2>Transparency at Every Step</h2>
+			<p>
+				We believe that tarot readings should be straightforward. Cb.tarot allows you to see exactly
+				how your deck is shuffled in real time. There are no hidden tricks or algorithms. Every card
+				is chosen randomly, and you can see the entire process unfold.
+			</p>
+		</div>
 
-	<p>
-		This is a <a href="https://svelte.dev/docs/kit">SvelteKit</a> app. You can make your own by typing
-		the following into your command line and following the prompts:
-	</p>
-
-	<pre>npx sv create</pre>
-
-	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
-	</p>
-
-	<p>
-		The Sverdle page illustrates SvelteKit's data loading and form handling. Try using it with
-		JavaScript disabled!
-	</p>
+		<div class="mb-6">
+			<h2>Simple Design, No Distractions</h2>
+			<p>
+				A simple layout ensures that your focus remains on what matters most: the reading itself.
+				There are no unnecessary frills, just a straightforward experience that's easy to navigate
+				and understand.
+			</p>
+		</div>
+		<div class="border-b pb-8">
+			<h2>Our Mission</h2>
+			<p>
+				Our goal is to create a transparent, easy-to-use tarot experience that anyone can enjoy. We
+				want to demystify the process of online tarot readings, offering you a clear way to connect
+				with your intuition. With a focus on simplicity and usability, we aim to provide you with
+				both clarity and insight—without the mystery.
+			</p>
+		</div>
+		<div class=" mt-8">
+			<h2>Disclaimer</h2>
+			<p>
+				Cb.tarot is intended for entertainment and guidance purposes only. The readings provided are
+				based on traditional tarot card symbolism and should not be considered a substitute for
+				professional advice in areas such as health, finance, or legal matters. Results and
+				interpretations are for personal reflection and should be used at your own discretion.
+			</p>
+		</div>
+	</div>
 </div>
+
+<style>
+	div {
+		line-height: 170%;
+	}
+
+	h1 {
+		font-size: 1.875rem /* 30px */;
+		line-height: 2.25rem /* 36px */;
+		margin-bottom: 1rem;
+		font-weight: bold;
+	}
+
+	h2 {
+		font-size: 1.25rem;
+		line-height: 2rem;
+		margin-bottom: 0.5rem;
+		font-weight: bold;
+	}
+
+	h3 {
+		color: #6d6d6d;
+	}
+
+	span {
+		font-family: 'Inter Tight', sans-serif;
+		font-weight: 600;
+	}
+
+	li {
+		display: list-item;
+		list-style-type: disc;
+		list-style-position: inside;
+		padding-inline-start: 20px;
+		margin-bottom: 0.75rem;
+	}
+</style>
