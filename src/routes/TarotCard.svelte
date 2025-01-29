@@ -36,63 +36,63 @@
 				: card.description.reversed
 	);
 
-	// async function fetchGPTReading(card: Card) {
-	// 	const name = card.name;
-	// 	const orientation = card.isUpright ? 'upright' : 'reversed';
+	async function fetchGPTReading(card: Card) {
+		const name = card.name;
+		const orientation = card.isUpright ? 'upright' : 'reversed';
 
-	// 	try {
-	// 		const res = await fetch('/api/gpt', {
-	// 			method: 'POST',
-	// 			headers: {
-	// 				'Content-Type': 'application/json'
-	// 			},
-	// 			body: JSON.stringify({
-	// 				prompt: 'Give me a one card tarot card reading for The ' + name + ', ' + orientation
-	// 			})
-	// 		});
-
-	// 		if (!res.ok) {
-	// 			const errorData = await res.json();
-	// 			throw new Error(errorData.error || 'Something went wrong');
-	// 		}
-
-	// 		const data = await res.json();
-	// 		response = data.message;
-	// 		console.log(response);
-	// 	} catch (error: any) {
-	// 		response = `Error: ${error.message}`;
-	// 	}
-	// }
-
-	async function fetchGPTReadingMock(card: Card, simulateError: boolean = false) {
-		if (aiReadingAvailable) {
-			const name = card.name;
-			const orientation = card.isUpright ? 'upright' : 'reversed';
-
-			// Simulate a 2-second delay
-			const mockResponse = `The ${name} ${orientation} represents emotional depth, intuition, and compassion. 
-  		In this position, she signifies a nurturing and caring energy, encouraging you to tap into your feelings and trust your intuition. 
-  		This card suggests that you may be called to support others, offering empathy and understanding. 
-  		It’s also a reminder to take care of your own emotional well-being and to create a harmonious environment around you. 
-  		The ${name} invites you to embrace your sensitivity and use it as a strength, fostering connections with others 
-  		and allowing your intuitive insights to guide you. Overall, it’s a positive sign of emotional fulfillment and the importance of self-care.`;
-
-			return new Promise<string>((resolve, reject) => {
-				setTimeout(() => {
-					if (simulateError) {
-						// Simulating an error condition
-						response = 'Mock Error: Something went wrong with the GPT request.';
-						reject(new Error('Mock Error: Something went wrong with the GPT request.'));
-					} else {
-						// Simulating a successful response
-						response = mockResponse;
-						resolve(mockResponse); // Return the mock response after a 2-second delay
-					}
-				}, 2000);
-				console.log(response);
+		try {
+			const res = await fetch('/api/gpt', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					prompt: 'Give me a one card tarot card reading for The ' + name + ', ' + orientation
+				})
 			});
+
+			if (!res.ok) {
+				const errorData = await res.json();
+				throw new Error(errorData.error || 'Something went wrong');
+			}
+
+			const data = await res.json();
+			response = data.message;
+			console.log(response);
+		} catch (error: any) {
+			response = `Error: ${error.message}`;
 		}
 	}
+
+	// async function fetchGPTReadingMock(card: Card, simulateError: boolean = false) {
+	// 	if (aiReadingAvailable) {
+	// 		const name = card.name;
+	// 		const orientation = card.isUpright ? 'upright' : 'reversed';
+
+	// 		// Simulate a 2-second delay
+	// 		const mockResponse = `The ${name} ${orientation} represents emotional depth, intuition, and compassion.
+	// 	In this position, she signifies a nurturing and caring energy, encouraging you to tap into your feelings and trust your intuition.
+	// 	This card suggests that you may be called to support others, offering empathy and understanding.
+	// 	It’s also a reminder to take care of your own emotional well-being and to create a harmonious environment around you.
+	// 	The ${name} invites you to embrace your sensitivity and use it as a strength, fostering connections with others
+	// 	and allowing your intuitive insights to guide you. Overall, it’s a positive sign of emotional fulfillment and the importance of self-care.`;
+
+	// 		return new Promise<string>((resolve, reject) => {
+	// 			setTimeout(() => {
+	// 				if (simulateError) {
+	// 					// Simulating an error condition
+	// 					response = 'Mock Error: Something went wrong with the GPT request.';
+	// 					reject(new Error('Mock Error: Something went wrong with the GPT request.'));
+	// 				} else {
+	// 					// Simulating a successful response
+	// 					response = mockResponse;
+	// 					resolve(mockResponse); // Return the mock response after a 2-second delay
+	// 				}
+	// 			}, 2000);
+	// 			console.log(response);
+	// 		});
+	// 	}
+	// }
 </script>
 
 <div
@@ -120,7 +120,7 @@
 					onclick={(e) => {
 						e.stopPropagation();
 						// onClose();
-						fetchGPTReadingMock(card);
+						fetchGPTReading(card);
 					}}>x</button
 				>
 			{/if}

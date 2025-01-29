@@ -1,14 +1,40 @@
 import { json, error } from '@sveltejs/kit';
-import { OPENAI_API_KEY } from '$env/static/private';
+import {
+	OPENAI_API_KEY,
+	UPSTASH_REDIS_REST_URL,
+	UPSTASH_REDIS_REST_TOKEN
+} from '$env/static/private';
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+
+const ratelimit = new Ratelimit({
+	redis: new Redis({
+		url: UPSTASH_REDIS_REST_URL,
+		token: UPSTASH_REDIS_REST_TOKEN
+	}),
+	limiter: Ratelimit.slidingWindow(2, '50 s'),
+	analytics: true,
+	prefix: '@upstash/ratelimit'
+});
+
 export const POST = async ({ request }) => {
+	console.log('chatgpt request');
 	// Get the request data
 	const { prompt } = await request.json();
 
 	if (!prompt) {
 		throw error(400, 'Prompt is required');
+	}
+
+	const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+	console.log(ip);
+	const { success } = await ratelimit.limit(ip);
+
+	if (!success) {
+		throw error(429, 'Rate limited');
 	}
 
 	try {
