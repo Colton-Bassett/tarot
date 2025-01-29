@@ -47,7 +47,8 @@
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					prompt: 'Give me a one card tarot card reading for The ' + name + ', ' + orientation
+					prompt:
+						'Give me a one card tarot card reading <120 words for The ' + name + ', ' + orientation
 				})
 			});
 

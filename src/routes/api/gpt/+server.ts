@@ -1,4 +1,6 @@
 import { json, error } from '@sveltejs/kit';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis/cloudflare';
 import {
 	OPENAI_API_KEY,
 	UPSTASH_REDIS_REST_URL,
@@ -6,11 +8,6 @@ import {
 } from '$env/static/private';
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
-
-import { Ratelimit } from '@upstash/ratelimit';
-// import { Redis } from '@upstash/redis';
-
-import { Redis } from '@upstash/redis/cloudflare';
 
 const ratelimit = new Ratelimit({
 	redis: new Redis({
@@ -51,7 +48,8 @@ export const POST = async ({ request }) => {
 				model: 'gpt-4o-mini',
 				messages: [{ role: 'user', content: prompt }],
 				max_tokens: 140,
-				temperature: 0.7
+
+				temperature: 0.6
 			})
 		});
 
