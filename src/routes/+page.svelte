@@ -4,11 +4,12 @@
 	import { flip } from 'svelte/animate';
 	import { goto } from '$app/navigation';
 	import TypeWriter from 'svelte-typewriter';
-	import TarotCard from './TarotCard.svelte';
+	import TarotCard from '../lib/components/TarotCard.svelte';
 	import type { ReadingType, CardBackType, OrientationType } from '$lib/constants';
 	import { shuffleCards } from '$lib/utils';
 	import type { Card } from '$lib/types';
 	import { deck } from '$lib/deck';
+	import TooltipWrapper from '../lib/components/TooltipWrapper.svelte';
 
 	let tarotDeck = $state(deck);
 	let selectedCard: Card | null = $state(null);
@@ -16,8 +17,7 @@
 	let isReadingVisible = $state(false);
 	let typeWriterOn = $state(true);
 
-	let aiReadingAvailable = $state(true);
-
+	let aiReadingEnabled: boolean = $state(true);
 	let readingType: ReadingType = $state('general');
 	let cardBackType: CardBackType = $state('plus');
 	let orientationType: OrientationType = $state('both');
@@ -109,7 +109,7 @@
 						isSelected={selectedCard?.id === card.id}
 						{isReadingVisible}
 						{typeWriterOn}
-						{aiReadingAvailable}
+						{aiReadingEnabled}
 						onSelect={handleCardSelect}
 						onClose={closeCard}
 					/>
@@ -119,29 +119,61 @@
 
 		<div class="my-6 max-w-5xl">
 			<div class="mb-4 flex flex-row-reverse justify-center gap-8 md:justify-start">
-				<button onclick={updateOrientationType} class="settingsButton min-w-12 underline-offset-2">
-					{orientationType === 'both' ? '↑ / ↓' : orientationType === 'upright' ? '↑' : '↓'}
-				</button>
-				<button
-					onclick={() => {
-						const types = ['general', 'romance', 'finance', 'career'] as const;
-						const currentIndex = types.indexOf(readingType);
-						readingType = types[(currentIndex + 1) % types.length];
-					}}
-					class="settingsButton min-w-[4.25rem] underline-offset-2"
-				>
-					{readingType}
-				</button>
-				<button
-					onclick={() => {
-						const types = ['plus', 'minus', 'ohs'] as const;
-						const currentIndex = types.indexOf(cardBackType);
-						cardBackType = types[(currentIndex + 1) % types.length];
-					}}
-					class="settingsButton min-w-12 underline-offset-2"
-				>
-					{cardBackType}
-				</button>
+				<TooltipWrapper content="Card orientation">
+					<div
+						role="button"
+						tabindex="0"
+						class="settingsButton min-w-12 underline-offset-2"
+						onclick={updateOrientationType}
+						onkeydown={(e) => {}}
+					>
+						{orientationType === 'both' ? '↑ / ↓' : orientationType === 'upright' ? '↑' : '↓'}
+					</div>
+				</TooltipWrapper>
+				<TooltipWrapper content="Reading type">
+					<div
+						role="button"
+						tabindex="0"
+						class="settingsButton min-w-[4.25rem] underline-offset-2"
+						onclick={() => {
+							const types = ['general', 'romance', 'finance', 'career'] as const;
+							const currentIndex = types.indexOf(readingType);
+							readingType = types[(currentIndex + 1) % types.length];
+						}}
+						onkeydown={(e) => {}}
+					>
+						{readingType}
+					</div>
+				</TooltipWrapper>
+				<TooltipWrapper content="Cardback style">
+					<div
+						role="button"
+						tabindex="0"
+						class="settingsButton min-w-12 underline-offset-2"
+						onclick={() => {
+							const types = ['plus', 'minus', 'ohs'] as const;
+							const currentIndex = types.indexOf(cardBackType);
+							cardBackType = types[(currentIndex + 1) % types.length];
+						}}
+						onkeydown={(e) => {}}
+					>
+						{cardBackType}
+					</div>
+				</TooltipWrapper>
+				<TooltipWrapper content={aiReadingEnabled ? 'AI reading: on' : 'AI reading: off'}>
+					<div
+						role="button"
+						tabindex="0"
+						class="aiAvailableButton min-w-8 rounded-2xl border border-[#dedede] text-xl text-[#dedede] underline-offset-2"
+						class:aiOn={aiReadingEnabled}
+						onclick={() => {
+							aiReadingEnabled = !aiReadingEnabled;
+						}}
+						onkeydown={(e) => {}}
+					>
+						✦
+					</div>
+				</TooltipWrapper>
 			</div>
 			<div class="flex flex-col justify-between md:flex-row">
 				<div class="flex justify-between">
@@ -159,7 +191,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="hidden" class:overlay={selectedCard !== null} onclick={closeCard}></div>
+	<div
+		role="button"
+		tabindex="-1"
+		class="hidden"
+		class:overlay={selectedCard !== null}
+		onclick={closeCard}
+		onkeydown={(e) => {}}
+	></div>
 </div>
 
 <style>
@@ -169,6 +208,15 @@
 
 	.settingsButton:hover {
 		text-decoration: underline;
+	}
+
+	.aiAvailableButton {
+		font-family: 'IBM Plex Mono', serif;
+	}
+
+	.aiOn {
+		color: black;
+		border-color: black;
 	}
 
 	.button {

@@ -3,8 +3,8 @@
 	import TypeWriter from 'svelte-typewriter';
 	import CardBack from './CardBack.svelte';
 	import { formatTextIntoParagraphs } from '$lib/utils';
-	import { getKeywords } from '../lib/utils';
-	import type { Card } from '../lib/types';
+	import { getKeywords } from '../utils';
+	import type { Card } from '../types';
 
 	let response = $state('');
 
@@ -14,7 +14,7 @@
 		isSelected,
 		isReadingVisible,
 		typeWriterOn,
-		aiReadingAvailable,
+		aiReadingEnabled,
 		onSelect,
 		onClose
 	}: {
@@ -23,13 +23,13 @@
 		isSelected: boolean;
 		isReadingVisible: boolean;
 		typeWriterOn: boolean;
-		aiReadingAvailable: boolean;
+		aiReadingEnabled: boolean;
 		onSelect: (card: Card) => void;
 		onClose: () => void;
 	} = $props();
 
 	let descriptionText = $derived(
-		aiReadingAvailable
+		aiReadingEnabled
 			? response
 			: card.isUpright
 				? card.description.upright
@@ -66,7 +66,7 @@
 	}
 
 	// async function fetchGPTReadingMock(card: Card, simulateError: boolean = false) {
-	// 	if (aiReadingAvailable) {
+	// 	if (aiReadingEnabled) {
 	// 		const name = card.name;
 	// 		const orientation = card.isUpright ? 'upright' : 'reversed';
 

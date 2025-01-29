@@ -1,5 +1,9 @@
 <script lang="ts">
-	export let isSelected = false;
+	let {
+		isSelected = false
+	}: {
+		isSelected: boolean;
+	} = $props();
 </script>
 
 <div class="cardBg" class:bgBorder={isSelected}>
