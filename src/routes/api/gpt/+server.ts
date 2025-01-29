@@ -8,7 +8,9 @@ import {
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
+// import { Redis } from '@upstash/redis';
+
+import { Redis } from '@upstash/redis/cloudflare';
 
 const ratelimit = new Ratelimit({
 	redis: new Redis({
