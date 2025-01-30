@@ -4,7 +4,7 @@
 	import { flip } from 'svelte/animate';
 	import { goto } from '$app/navigation';
 	import TypeWriter from 'svelte-typewriter';
-	import TarotCard from '../lib/components/TarotCard.svelte';
+	import TarotCard from '$lib/components/TarotCard.svelte';
 	import type { ReadingType, CardBackType, OrientationType } from '$lib/constants';
 	import { shuffleCards } from '$lib/utils';
 	import type { Card } from '$lib/types';
@@ -12,46 +12,61 @@
 	import Settings from '$lib/components/Settings.svelte';
 	import Actions from '$lib/components/Actions.svelte';
 
-	let tarotDeck = $state(deck);
-	let selectedCard: Card | null = $state(null);
-	let showCardFront = $state(true);
-	let isReadingVisible = $state(false);
-	let typeWriterOn = $state(true);
+	// state
+	const initialState = {
+		tarotDeck: deck,
+		selectedCard: null as Card | null,
+		showCardFront: true,
+		isReadingVisible: false,
+		typeWriterOn: true,
+		aiReadingEnabled: false,
+		readingType: 'general' as ReadingType,
+		cardBackType: 'plus' as CardBackType,
+		orientationType: 'both' as OrientationType
+	};
 
-	let aiReadingEnabled: boolean = $state(false);
-	let readingType: ReadingType = $state('general');
-	let cardBackType: CardBackType = $state('plus');
-	let orientationType: OrientationType = $state('both');
+	let {
+		tarotDeck,
+		selectedCard,
+		showCardFront,
+		isReadingVisible,
+		typeWriterOn,
+		aiReadingEnabled,
+		readingType,
+		cardBackType,
+		orientationType
+	} = $state(initialState);
 
+	// card handling
 	function handleCardSelect(card: Card) {
-		// skip typewriter, show full reading
-		if (selectedCard?.id === card.id && isReadingVisible === true) {
-			console.log('toggling typewriter');
-			typeWriterOn = false;
-			// show reading
-		} else if (selectedCard?.id === card.id) {
-			console.log('here is card');
-			isReadingVisible = true;
-			showCardFront = true;
+		if (selectedCard?.id === card.id) {
+			if (isReadingVisible) {
+				//skip typewriter
+				typeWriterOn = false;
+			} else {
+				// show reading
+				isReadingVisible = true;
+				showCardFront = true;
+			}
 			return;
 		}
-		console.log('selectedCard = card');
 		selectedCard = card;
 	}
 
-	function shuffleDeck() {
-		tarotDeck = shuffleCards(tarotDeck, orientationType);
-	}
-
-	function pickCard() {
-		showCardFront = false;
-		tarotDeck = shuffleCards(tarotDeck, orientationType);
-	}
-
-	function resetDeck() {
-		tarotDeck = deck;
-		showCardFront = true;
-	}
+	// deck operations
+	const deckOperations = {
+		shuffle: () => {
+			tarotDeck = shuffleCards(tarotDeck, orientationType);
+		},
+		pick: () => {
+			showCardFront = false;
+			deckOperations.shuffle();
+		},
+		reset: () => {
+			tarotDeck = deck;
+			showCardFront = true;
+		}
+	};
 
 	function closeCard() {
 		selectedCard = null;
@@ -59,48 +74,44 @@
 		typeWriterOn = true;
 	}
 
-	function updateOrientationType() {
-		const types = ['both', 'upright', 'reversed'] as const;
-		const currentIndex = types.indexOf(orientationType);
-		orientationType = types[(currentIndex + 1) % types.length];
-		shuffleCards(tarotDeck, orientationType);
+	// settings updates
+	function cycleThrough<T>(current: T, options: readonly T[]): T {
+		const currentIndex = options.indexOf(current);
+		return options[(currentIndex + 1) % options.length];
 	}
 
-	function updateReadingType() {
-		const types = ['general', 'romance', 'finance', 'career'] as const;
-		const currentIndex = types.indexOf(readingType);
-		readingType = types[(currentIndex + 1) % types.length];
-	}
-
-	function updateCardbackType() {
-		const types = ['plus', 'minus', 'ohs'] as const;
-		const currentIndex = types.indexOf(cardBackType);
-		cardBackType = types[(currentIndex + 1) % types.length];
-	}
-
-	function updateAiReadingEnabled() {
-		// check if user is rate-limited or not somehow
-		console.log('updateAiReadingEnalbed(): check if user is ratelimited');
-		aiReadingEnabled = !aiReadingEnabled;
-	}
-
-	// keyboard shortcuts handler
-	function handleKeyPress(event: KeyboardEvent) {
-		const shortcuts: Record<string, () => void> = {
-			Escape: () => {
-				closeCard();
-			},
-			a: () => goto('/about'),
-			g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
-			h: () => goto('/'),
-			p: pickCard,
-			r: resetDeck,
-			s: () => alert('settings!'),
-			x: () => {
-				tarotDeck = shuffleCards(tarotDeck, orientationType);
+	const settingsUpdaters = {
+		orientationType: () => {
+			orientationType = cycleThrough(orientationType, ['both', 'upright', 'reversed'] as const);
+			shuffleCards(tarotDeck, orientationType);
+		},
+		readingType: () => {
+			readingType = cycleThrough(readingType, ['general', 'romance', 'finance', 'career'] as const);
+		},
+		cardBackType: () => {
+			cardBackType = cycleThrough(cardBackType, ['plus', 'minus', 'ohs'] as const);
+		},
+		aiReadingEnabled: () => {
+			aiReadingEnabled = !aiReadingEnabled;
+			if (!aiReadingEnabled) {
+				readingType = 'general';
 			}
-		};
+		}
+	};
 
+	// keyboard shortcuts
+	const shortcuts: Record<string, () => void> = {
+		Escape: closeCard,
+		a: () => goto('/about'),
+		g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
+		h: () => goto('/'),
+		p: deckOperations.pick,
+		r: deckOperations.reset,
+		s: () => alert('settings!'),
+		x: deckOperations.shuffle
+	};
+
+	function handleKeyPress(event: KeyboardEvent) {
 		shortcuts[event.key]?.();
 	}
 </script>
@@ -149,12 +160,16 @@
 				{orientationType}
 				{readingType}
 				{cardBackType}
-				{updateOrientationType}
-				{updateReadingType}
-				{updateCardbackType}
-				{updateAiReadingEnabled}
+				updateOrientationType={settingsUpdaters.orientationType}
+				updateReadingType={settingsUpdaters.readingType}
+				updateCardbackType={settingsUpdaters.cardBackType}
+				updateAiReadingEnabled={settingsUpdaters.aiReadingEnabled}
 			></Settings>
-			<Actions {shuffleDeck} {resetDeck} {pickCard}></Actions>
+			<Actions
+				shuffle={deckOperations.shuffle}
+				reset={deckOperations.reset}
+				pick={deckOperations.pick}
+			></Actions>
 		</div>
 	</div>
 	<div

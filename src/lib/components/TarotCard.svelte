@@ -1,14 +1,26 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import TypeWriter from 'svelte-typewriter';
-	import CardBack from './CardBack.svelte';
 	import { formatTextIntoParagraphs } from '$lib/utils';
-	import { getKeywords } from '../utils';
-	import type { Card } from '../types';
+	import { getKeywords } from '$lib/utils';
+	import type { Card } from '$lib/types';
 	import type { ReadingType } from '$lib/constants';
+	import CardBack from '$lib/components/CardBack.svelte';
+
+	interface Props {
+		card: Card;
+		showFront: boolean;
+		isSelected: boolean;
+		isReadingVisible: boolean;
+		typeWriterOn: boolean;
+		aiReadingEnabled: boolean;
+		readingType: ReadingType;
+		onSelect: (card: Card) => void;
+		onClose: () => void;
+	}
 
 	let response = $state('');
-
+	let isLoading = $state(false);
 	let {
 		card,
 		showFront,
@@ -19,17 +31,7 @@
 		readingType,
 		onSelect,
 		onClose
-	}: {
-		card: Card;
-		showFront: boolean;
-		isSelected: boolean;
-		isReadingVisible: boolean;
-		typeWriterOn: boolean;
-		aiReadingEnabled: boolean;
-		readingType: ReadingType;
-		onSelect: (card: Card) => void;
-		onClose: () => void;
-	} = $props();
+	}: Props = $props();
 
 	let descriptionText = $derived(
 		aiReadingEnabled
@@ -40,46 +42,35 @@
 	);
 
 	async function fetchGPTReading(card: Card, readingType: ReadingType) {
-		const name = card.name;
-		const orientation = card.isUpright ? 'upright' : 'reversed';
+		isLoading = true;
+
+		const payload = {
+			prompt: `Give me a one card ${readingType} tarot card reading <120 words for The ${card.name}, ${
+				card.isUpright ? 'upright' : 'reversed'
+			}`
+		};
 
 		try {
 			const res = await fetch('/api/gpt', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					prompt:
-						'Give me a one card ' +
-						readingType +
-						' tarot card reading <120 words for The ' +
-						name +
-						', ' +
-						orientation
-				})
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
 			});
 
 			if (!res.ok) {
 				const errorData = await res.json();
-				throw new Error(errorData.error || 'Something went wrong');
+				throw new Error(errorData.error || 'Failed to fetch reading');
 			}
 
 			const data = await res.json();
 			response = data.message;
 			console.log(response);
-		} catch (error: any) {
-			response = `Error: ${error.message}`;
+		} catch (error) {
+			response = `Error: ${error instanceof Error ? error.message : 'Failed to fetch reading'}`;
+		} finally {
+			isLoading = false;
 		}
 	}
-
-	// fetch from gpt when selecting card + aiReadingEnabled
-	$effect(() => {
-		if (isSelected && isReadingVisible && aiReadingEnabled) {
-			console.log('running fetchGPTReading');
-			fetchGPTReading(card, readingType);
-		}
-	});
 
 	// async function fetchGPTReadingMock(
 	// 	card: Card,
@@ -115,6 +106,13 @@
 	// 		});
 	// 	}
 	// }
+
+	$effect(() => {
+		// fetch from gpt when selecting card + aiReadingEnabled
+		if (isSelected && isReadingVisible && aiReadingEnabled) {
+			fetchGPTReading(card, readingType);
+		}
+	});
 </script>
 
 <div
@@ -159,7 +157,9 @@
 			</div>
 		</div>
 		<div class="flex-col items-center justify-center text-center">
-			{#if typeWriterOn}
+			{#if isLoading}
+				<div class="animate-pulse text-gray-500">Loading your personalized reading...</div>
+			{:else if typeWriterOn}
 				{#key response}
 					<TypeWriter mode="cascade">
 						{@html formatTextIntoParagraphs(descriptionText)}

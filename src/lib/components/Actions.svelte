@@ -3,22 +3,22 @@
 	import type { OrientationType } from '$lib/constants';
 
 	let {
-		shuffleDeck,
-		resetDeck,
-		pickCard
+		shuffle,
+		reset,
+		pick
 	}: {
-		shuffleDeck(): void;
-		resetDeck(): void;
-		pickCard(): void;
+		shuffle(): void;
+		reset(): void;
+		pick(): void;
 	} = $props();
 </script>
 
 <div class="flex flex-col justify-between md:flex-row">
 	<div class="flex justify-between">
-		<button class="button px-6 py-1" onclick={shuffleDeck}> [x] shuffle </button>
-		<button class="button px-6 py-1 lowercase" onclick={resetDeck}> [r] reset </button>
+		<button class="button px-6 py-1" onclick={shuffle}> [x] shuffle </button>
+		<button class="button px-6 py-1 lowercase" onclick={reset}> [r] reset </button>
 	</div>
-	<button class="button px-6 py-1 lowercase" onclick={pickCard}> [p] pick </button>
+	<button class="button px-6 py-1 lowercase" onclick={pick}> [p] pick </button>
 </div>
 
 <style>
