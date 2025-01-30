@@ -73,7 +73,20 @@
 		}
 	}
 
-	// async function fetchGPTReadingMock(card: Card, simulateError: boolean = false) {
+	// fetch from gpt when selecting card + aiReadingEnabled
+	$effect(() => {
+		if (isSelected && isReadingVisible && aiReadingEnabled) {
+			console.log('running fetchGPTReading');
+			fetchGPTReading(card, readingType);
+		}
+	});
+
+	// async function fetchGPTReadingMock(
+	// 	card: Card,
+	// 	readingType: ReadingType,
+	// 	simulateError: boolean = false
+	// ) {
+	// 	console.log('fetchingGPTMock');
 	// 	if (aiReadingEnabled) {
 	// 		const name = card.name;
 	// 		const orientation = card.isUpright ? 'upright' : 'reversed';
@@ -128,8 +141,7 @@
 					class="closeButton flex w-10 items-center justify-center"
 					onclick={(e) => {
 						e.stopPropagation();
-						// onClose();
-						fetchGPTReading(card, readingType);
+						onClose();
 					}}>x</button
 				>
 			{/if}

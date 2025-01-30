@@ -8,7 +8,8 @@
 		cardBackType,
 		updateOrientationType,
 		updateReadingType,
-		updateCardbackType
+		updateCardbackType,
+		updateAiReadingEnabled
 	}: {
 		aiReadingEnabled: boolean;
 		orientationType: OrientationType;
@@ -17,6 +18,7 @@
 		updateOrientationType(): void;
 		updateReadingType(): void;
 		updateCardbackType(): void;
+		updateAiReadingEnabled(): void;
 	} = $props();
 </script>
 
@@ -60,9 +62,7 @@
 			tabindex="0"
 			class="aiAvailableButton min-w-8 rounded-2xl border border-[#dedede] text-xl text-[#dedede] underline-offset-2"
 			class:aiOn={aiReadingEnabled}
-			onclick={() => {
-				aiReadingEnabled = !aiReadingEnabled;
-			}}
+			onclick={updateAiReadingEnabled}
 			onkeydown={(e) => {}}
 		>
 			✦

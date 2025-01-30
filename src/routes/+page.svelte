@@ -18,15 +18,17 @@
 	let isReadingVisible = $state(false);
 	let typeWriterOn = $state(true);
 
-	let aiReadingEnabled: boolean = $state(true);
+	let aiReadingEnabled: boolean = $state(false);
 	let readingType: ReadingType = $state('general');
 	let cardBackType: CardBackType = $state('plus');
 	let orientationType: OrientationType = $state('both');
 
 	function handleCardSelect(card: Card) {
+		// skip typewriter, show full reading
 		if (selectedCard?.id === card.id && isReadingVisible === true) {
 			console.log('toggling typewriter');
 			typeWriterOn = false;
+			// show reading
 		} else if (selectedCard?.id === card.id) {
 			console.log('here is card');
 			isReadingVisible = true;
@@ -74,6 +76,12 @@
 		const types = ['plus', 'minus', 'ohs'] as const;
 		const currentIndex = types.indexOf(cardBackType);
 		cardBackType = types[(currentIndex + 1) % types.length];
+	}
+
+	function updateAiReadingEnabled() {
+		// check if user is rate-limited or not somehow
+		console.log('updateAiReadingEnalbed(): check if user is ratelimited');
+		aiReadingEnabled = !aiReadingEnabled;
 	}
 
 	// keyboard shortcuts handler
@@ -144,6 +152,7 @@
 				{updateOrientationType}
 				{updateReadingType}
 				{updateCardbackType}
+				{updateAiReadingEnabled}
 			></Settings>
 			<Actions {shuffleDeck} {resetDeck} {pickCard}></Actions>
 		</div>
