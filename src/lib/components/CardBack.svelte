@@ -31,7 +31,8 @@
 		grid-template-rows: repeat(3, 1fr);
 		height: 100%;
 		width: 100%;
-		border-radius: 2px;
+
+		border-radius: 10px;
 		pointer-events: none;
 	}
 

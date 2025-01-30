@@ -5,6 +5,7 @@
 	import { formatTextIntoParagraphs } from '$lib/utils';
 	import { getKeywords } from '../utils';
 	import type { Card } from '../types';
+	import type { ReadingType } from '$lib/constants';
 
 	let response = $state('');
 
@@ -15,6 +16,7 @@
 		isReadingVisible,
 		typeWriterOn,
 		aiReadingEnabled,
+		readingType,
 		onSelect,
 		onClose
 	}: {
@@ -24,6 +26,7 @@
 		isReadingVisible: boolean;
 		typeWriterOn: boolean;
 		aiReadingEnabled: boolean;
+		readingType: ReadingType;
 		onSelect: (card: Card) => void;
 		onClose: () => void;
 	} = $props();
@@ -36,7 +39,7 @@
 				: card.description.reversed
 	);
 
-	async function fetchGPTReading(card: Card) {
+	async function fetchGPTReading(card: Card, readingType: ReadingType) {
 		const name = card.name;
 		const orientation = card.isUpright ? 'upright' : 'reversed';
 
@@ -48,7 +51,12 @@
 				},
 				body: JSON.stringify({
 					prompt:
-						'Give me a one card tarot card reading <120 words for The ' + name + ', ' + orientation
+						'Give me a one card ' +
+						readingType +
+						' tarot card reading <120 words for The ' +
+						name +
+						', ' +
+						orientation
 				})
 			});
 
@@ -99,7 +107,7 @@
 <div
 	class="card"
 	class:center={isSelected}
-	class:shakeAnimation={isSelected && !isReadingVisible}
+	class:floatAnimation={isSelected && !isReadingVisible}
 	class:cursor={isSelected && isReadingVisible}
 	onclick={() => onSelect(card)}
 	onkeydown={() => {}}
@@ -121,7 +129,7 @@
 					onclick={(e) => {
 						e.stopPropagation();
 						// onClose();
-						fetchGPTReading(card);
+						fetchGPTReading(card, readingType);
 					}}>x</button
 				>
 			{/if}
@@ -203,6 +211,7 @@
 		padding: 1.5rem;
 		justify-content: flex-start;
 		transition: all 0.3s ease-in-out;
+		border-color: black;
 	}
 
 	.center .cardHeader {
@@ -212,8 +221,9 @@
 		cursor: default;
 	}
 
-	.shakeAnimation:hover {
-		animation: tilt-n-move-shaking 0.5s ease-in-out 1s;
+	.floatAnimation {
+		animation: float 2s ease-in-out infinite;
+		transform-origin: center center;
 	}
 
 	.reversed::after {
@@ -226,21 +236,15 @@
 		}
 	}
 
-	@keyframes tilt-n-move-shaking {
+	@keyframes float {
 		0% {
-			transform: translate(-50%, -50%) rotate(0deg);
-		}
-		25% {
-			transform: translate(-50%, -50%) rotate(2.5deg);
+			transform: translateY(-50%, -50%);
 		}
 		50% {
-			transform: translate(-50%, -50%) rotate(0deg);
-		}
-		75% {
-			transform: translate(-50%, -50%) rotate(-2.5deg);
+			transform: translate(-50%, calc(-50% - 12px));
 		}
 		100% {
-			transform: translate(-50%, -50%) rotate(0deg);
+			transform: translateY(-50%, -50%);
 		}
 	}
 </style>

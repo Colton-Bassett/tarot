@@ -64,6 +64,18 @@
 		shuffleCards(tarotDeck, orientationType);
 	}
 
+	function updateReadingType() {
+		const types = ['general', 'romance', 'finance', 'career'] as const;
+		const currentIndex = types.indexOf(readingType);
+		readingType = types[(currentIndex + 1) % types.length];
+	}
+
+	function updateCardbackType() {
+		const types = ['plus', 'minus', 'ohs'] as const;
+		const currentIndex = types.indexOf(cardBackType);
+		cardBackType = types[(currentIndex + 1) % types.length];
+	}
+
 	// keyboard shortcuts handler
 	function handleKeyPress(event: KeyboardEvent) {
 		const shortcuts: Record<string, () => void> = {
@@ -115,6 +127,7 @@
 						{isReadingVisible}
 						{typeWriterOn}
 						{aiReadingEnabled}
+						{readingType}
 						onSelect={handleCardSelect}
 						onClose={closeCard}
 					/>
@@ -129,6 +142,8 @@
 				{readingType}
 				{cardBackType}
 				{updateOrientationType}
+				{updateReadingType}
+				{updateCardbackType}
 			></Settings>
 			<Actions {shuffleDeck} {resetDeck} {pickCard}></Actions>
 		</div>
@@ -136,7 +151,7 @@
 	<div
 		role="button"
 		tabindex="-1"
-		class="hidden"
+		class="hidden cursor-default"
 		class:overlay={selectedCard !== null}
 		onclick={closeCard}
 		onkeydown={(e) => {}}

@@ -6,13 +6,17 @@
 		orientationType,
 		readingType,
 		cardBackType,
-		updateOrientationType
+		updateOrientationType,
+		updateReadingType,
+		updateCardbackType
 	}: {
 		aiReadingEnabled: boolean;
 		orientationType: OrientationType;
 		readingType: ReadingType;
 		cardBackType: CardBackType;
 		updateOrientationType(): void;
+		updateReadingType(): void;
+		updateCardbackType(): void;
 	} = $props();
 </script>
 
@@ -33,11 +37,7 @@
 			role="button"
 			tabindex="0"
 			class="settingsButton min-w-[4.25rem] underline-offset-2"
-			onclick={() => {
-				const types = ['general', 'romance', 'finance', 'career'] as const;
-				const currentIndex = types.indexOf(readingType);
-				readingType = types[(currentIndex + 1) % types.length];
-			}}
+			onclick={updateReadingType}
 			onkeydown={(e) => {}}
 		>
 			{readingType}
@@ -48,11 +48,7 @@
 			role="button"
 			tabindex="0"
 			class="settingsButton min-w-12 underline-offset-2"
-			onclick={() => {
-				const types = ['plus', 'minus', 'ohs'] as const;
-				const currentIndex = types.indexOf(cardBackType);
-				cardBackType = types[(currentIndex + 1) % types.length];
-			}}
+			onclick={updateCardbackType}
 			onkeydown={(e) => {}}
 		>
 			{cardBackType}
