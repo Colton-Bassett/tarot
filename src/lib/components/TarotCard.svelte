@@ -66,7 +66,6 @@
 
 			const data = await res.json();
 			response = data.message;
-			console.log(response);
 		} catch (error) {
 			// show default text
 			response = card.isUpright ? card.description.upright : card.description.reversed;
@@ -75,6 +74,7 @@
 		}
 	}
 
+	// for testing
 	// async function fetchGPTReadingMock(card: Card, readingType: ReadingType) {
 	// 	isLoading = true;
 

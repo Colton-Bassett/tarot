@@ -16,7 +16,7 @@
 	<Tooltip.Provider>
 		<Tooltip.Root>
 			<Tooltip.Trigger>
-				<div class="help min-w-[34px] rounded-3xl border p-2 text-xs text-[#aaa]">?</div>
+				<div class="help min-w-[2.125rem] rounded-3xl border p-2 text-xs text-[#aaa]">?</div>
 			</Tooltip.Trigger>
 			<Tooltip.Content>
 				<p>

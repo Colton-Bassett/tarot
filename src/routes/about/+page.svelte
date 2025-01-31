@@ -26,8 +26,8 @@
 		<div class="border-b pb-8">
 			<h1 class="">About cb.tarot</h1>
 			<h3 class="">
-				For daily guidance or simple curiosity, we offer a transparent one-card reading experience
-				that puts you in control.
+				For daily guidance or simple curiosity, cb.tarot is a transparent one-card reading
+				experience.
 			</h3>
 		</div>
 		<div class="mb-3 mt-8">
@@ -36,7 +36,7 @@
 			<ul class="list-disc">
 				<li>
 					<span>One-Card Readings: </span>
-					Get your daily card pull with a simple, no-frills process. You can even shuffle the deck, reset
+					Get your daily card pull with a simple, no-frills process. You can also shuffle the deck, reset
 					it, or choose between upright, reversed, or a mix of card orientations.
 				</li>
 				<li>
@@ -54,9 +54,9 @@
 		<div class="mb-6">
 			<h2>Transparency at Every Step</h2>
 			<p>
-				We believe that tarot readings should be straightforward. Cb.tarot allows you to see exactly
-				how your deck is shuffled in real time. There are no hidden tricks or algorithms. Every card
-				is chosen randomly, and you can see the entire process unfold.
+				Tarot readings should be straightforward. You to see exactly how your deck is shuffled in
+				real time. There are no hidden tricks or algorithms. Every card is chosen randomly, and you
+				can see the entire process unfold.
 			</p>
 		</div>
 
@@ -72,9 +72,9 @@
 			<h2>Our Mission</h2>
 			<p>
 				Our goal is to create a transparent, easy-to-use tarot experience that anyone can enjoy. We
-				want to demystify the process of online tarot readings, offering you a clear way to connect
-				with your intuition. With a focus on simplicity and usability, we aim to provide you with
-				both clarity and insight—without the mystery.
+				want to demystify the process of tarot readings, offering you a clear way to connect with
+				your intuition. With a focus on simplicity and usability, we aim to provide you with both
+				clarity and insight—without the mystery.
 			</p>
 		</div>
 		<div class=" mt-8">
@@ -95,8 +95,8 @@
 	}
 
 	h1 {
-		font-size: 1.875rem /* 30px */;
-		line-height: 2.25rem /* 36px */;
+		font-size: 1.875rem;
+		line-height: 2.25rem;
 		margin-bottom: 1rem;
 		font-weight: bold;
 	}

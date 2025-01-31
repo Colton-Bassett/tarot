@@ -20,8 +20,7 @@ const ratelimit = new Ratelimit({
 });
 
 export const POST = async ({ request }) => {
-	console.log('chatgpt request');
-	// Get the request data
+	// get the request data
 	const { prompt } = await request.json();
 
 	if (!prompt) {
@@ -29,7 +28,6 @@ export const POST = async ({ request }) => {
 	}
 
 	const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-	console.log(ip);
 	const { success } = await ratelimit.limit(ip);
 
 	if (!success) {
@@ -37,7 +35,7 @@ export const POST = async ({ request }) => {
 	}
 
 	try {
-		// Send request to OpenAI API
+		// send request to OpenAI API
 		const response = await fetch(OPENAI_API_URL, {
 			method: 'POST',
 			headers: {
@@ -59,7 +57,7 @@ export const POST = async ({ request }) => {
 
 		const data = await response.json();
 
-		// Send OpenAI response back to client
+		// send OpenAI response back to client
 		return json({
 			message: data.choices[0].message.content
 		});
