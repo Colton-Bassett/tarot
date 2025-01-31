@@ -23,47 +23,44 @@
 </script>
 
 <div class="mb-4 flex flex-row-reverse justify-center gap-8 md:justify-start">
-	<TooltipWrapper content="Card orientation">
-		<div
-			role="button"
-			tabindex="0"
-			class="settingsButton min-w-12 underline-offset-2"
-			onclick={updateOrientationType}
-			onkeydown={(e) => {}}
-		>
+	<TooltipWrapper
+		content={orientationType === 'both'
+			? 'card orientation: mixed'
+			: orientationType === 'upright'
+				? 'card orientation: upright'
+				: 'card orientation: reversed'}
+	>
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div class="settingsButton min-w-12 underline-offset-2" onclick={updateOrientationType}>
 			{orientationType === 'both' ? '↑ / ↓' : orientationType === 'upright' ? '↑' : '↓'}
 		</div>
 	</TooltipWrapper>
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<TooltipWrapper content="Reading type">
 		<div
-			role="button"
-			tabindex="0"
 			class="settingsButton min-w-[4.25rem] underline-offset-2"
+			class:disabled={!aiReadingEnabled}
 			onclick={updateReadingType}
-			onkeydown={(e) => {}}
 		>
 			{readingType}
 		</div>
 	</TooltipWrapper>
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<TooltipWrapper content="Cardback style">
-		<div
-			role="button"
-			tabindex="0"
-			class="settingsButton min-w-12 underline-offset-2"
-			onclick={updateCardbackType}
-			onkeydown={(e) => {}}
-		>
+		<div class="settingsButton min-w-[58px] underline-offset-2" onclick={updateCardbackType}>
 			{cardBackType}
 		</div>
 	</TooltipWrapper>
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<TooltipWrapper content={aiReadingEnabled ? 'AI reading: on' : 'AI reading: off'}>
 		<div
-			role="button"
-			tabindex="0"
-			class="aiAvailableButton min-w-8 rounded-2xl border border-[#dedede] text-xl text-[#dedede] underline-offset-2"
+			class="aiAvailableButton flex h-7 min-w-7 items-center justify-center rounded-2xl border border-[#dedede] text-xl text-[#dedede] underline-offset-2"
 			class:aiOn={aiReadingEnabled}
 			onclick={updateAiReadingEnabled}
-			onkeydown={(e) => {}}
 		>
 			✦
 		</div>
@@ -86,5 +83,11 @@
 	.aiOn {
 		color: black;
 		border-color: black;
+	}
+
+	.disabled {
+		color: #dedede;
+		pointer-events: none;
+		opacity: 0.5;
 	}
 </style>

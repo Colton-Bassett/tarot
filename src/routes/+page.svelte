@@ -19,7 +19,7 @@
 		showCardFront: true,
 		isReadingVisible: false,
 		typeWriterOn: true,
-		aiReadingEnabled: false,
+		aiReadingEnabled: true,
 		readingType: 'general' as ReadingType,
 		cardBackType: 'plus' as CardBackType,
 		orientationType: 'both' as OrientationType
@@ -89,7 +89,7 @@
 			readingType = cycleThrough(readingType, ['general', 'romance', 'finance', 'career'] as const);
 		},
 		cardBackType: () => {
-			cardBackType = cycleThrough(cardBackType, ['plus', 'minus', 'ohs'] as const);
+			cardBackType = cycleThrough(cardBackType, ['plus', 'hearts', 'stars'] as const);
 		},
 		aiReadingEnabled: () => {
 			aiReadingEnabled = !aiReadingEnabled;
@@ -129,7 +129,7 @@
 			<div class="mb-4 flex flex-col items-center justify-center">
 				<h1 class="mb-4 text-center text-3xl font-bold">Welcome to cb.tarot</h1>
 				<p class="text-center text-[#6d6d6d]">
-					Choose a card and get insight. A simple, focused reading for today.
+					[p] pick your card and receive a simple, focused reading for today.
 				</p>
 			</div>
 		</TypeWriter>
@@ -141,6 +141,7 @@
 				<div animate:flip={{ duration: 500 }}>
 					<TarotCard
 						{card}
+						{cardBackType}
 						showFront={showCardFront}
 						isSelected={selectedCard?.id === card.id}
 						{isReadingVisible}

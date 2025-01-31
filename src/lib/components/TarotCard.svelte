@@ -4,11 +4,12 @@
 	import { formatTextIntoParagraphs } from '$lib/utils';
 	import { getKeywords } from '$lib/utils';
 	import type { Card } from '$lib/types';
-	import type { ReadingType } from '$lib/constants';
+	import type { CardBackType, ReadingType } from '$lib/constants';
 	import CardBack from '$lib/components/CardBack.svelte';
 
 	interface Props {
 		card: Card;
+		cardBackType: CardBackType;
 		showFront: boolean;
 		isSelected: boolean;
 		isReadingVisible: boolean;
@@ -23,6 +24,7 @@
 	let isLoading = $state(false);
 	let {
 		card,
+		cardBackType,
 		showFront,
 		isSelected,
 		isReadingVisible,
@@ -66,44 +68,33 @@
 			response = data.message;
 			console.log(response);
 		} catch (error) {
-			response = `Error: ${error instanceof Error ? error.message : 'Failed to fetch reading'}`;
+			// show default text
+			response = card.isUpright ? card.description.upright : card.description.reversed;
 		} finally {
 			isLoading = false;
 		}
 	}
 
-	// async function fetchGPTReadingMock(
-	// 	card: Card,
-	// 	readingType: ReadingType,
-	// 	simulateError: boolean = false
-	// ) {
-	// 	console.log('fetchingGPTMock');
-	// 	if (aiReadingEnabled) {
-	// 		const name = card.name;
-	// 		const orientation = card.isUpright ? 'upright' : 'reversed';
+	// async function fetchGPTReadingMock(card: Card, readingType: ReadingType) {
+	// 	isLoading = true;
 
-	// 		// Simulate a 2-second delay
-	// 		const mockResponse = `The ${name} ${orientation} represents emotional depth, intuition, and compassion.
-	// 	In this position, she signifies a nurturing and caring energy, encouraging you to tap into your feelings and trust your intuition.
-	// 	This card suggests that you may be called to support others, offering empathy and understanding.
-	// 	It’s also a reminder to take care of your own emotional well-being and to create a harmonious environment around you.
-	// 	The ${name} invites you to embrace your sensitivity and use it as a strength, fostering connections with others
-	// 	and allowing your intuitive insights to guide you. Overall, it’s a positive sign of emotional fulfillment and the importance of self-care.`;
+	// 	const payload = {
+	// 		prompt: `Give me a one card ${readingType} tarot card reading <120 words for The ${card.name}, ${
+	// 			card.isUpright ? 'upright' : 'reversed'
+	// 		}`
+	// 	};
 
-	// 		return new Promise<string>((resolve, reject) => {
-	// 			setTimeout(() => {
-	// 				if (simulateError) {
-	// 					// Simulating an error condition
-	// 					response = 'Mock Error: Something went wrong with the GPT request.';
-	// 					reject(new Error('Mock Error: Something went wrong with the GPT request.'));
-	// 				} else {
-	// 					// Simulating a successful response
-	// 					response = mockResponse;
-	// 					resolve(mockResponse); // Return the mock response after a 2-second delay
-	// 				}
-	// 			}, 2000);
-	// 			console.log(response);
-	// 		});
+	// 	// Simulate the 2-second delay with a Promise
+	// 	try {
+	// 		await new Promise((resolve) => setTimeout(resolve, 2000)); // 2-second delay
+
+	// 		// Simulate an error response
+	// 		throw new Error('Failed to fetch reading');
+	// 	} catch (error) {
+	// 		response = card.isUpright ? card.description.upright : card.description.reversed;
+	// 		console.log(response);
+	// 	} finally {
+	// 		isLoading = false;
 	// 	}
 	// }
 
@@ -129,14 +120,20 @@
 	{#if showFront}
 		<div class="cardHeader" transition:fade={{ duration: showFront ? 500 : 0 }}>
 			{#if isSelected}
-				<span class="flex w-10 items-center justify-center">{card.isUpright ? '↑' : '↓'} </span>
+				<span class="bold flex w-10 items-center justify-center"
+					>{card.isUpright ? '↑' : '↓'}
+				</span>
 			{/if}
-			<span class="w-full text-center" class:reversed={!card.isUpright && showFront}>
+			<span
+				class="w-full text-center"
+				class:reversed={!card.isUpright && showFront}
+				class:bold={isSelected}
+			>
 				{card.name}
 			</span>
 			{#if isSelected}
 				<button
-					class="closeButton flex w-10 items-center justify-center"
+					class="closeButton flex w-10 items-center justify-center font-bold"
 					onclick={(e) => {
 						e.stopPropagation();
 						onClose();
@@ -145,7 +142,7 @@
 			{/if}
 		</div>
 	{:else}
-		<CardBack {isSelected} />
+		<CardBack {isSelected} {cardBackType} />
 	{/if}
 
 	{#if isSelected && isReadingVisible}
@@ -205,6 +202,10 @@
 		justify-content: center;
 		align-items: center;
 		width: 100%;
+	}
+
+	.bold {
+		font-weight: bold;
 	}
 
 	.closeButton:hover {

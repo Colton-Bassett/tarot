@@ -40,3 +40,4 @@ You can preview the production build with `npm run preview`.
 ## Dev Notes
 
 cloudflare: cb
+upstash: gh
