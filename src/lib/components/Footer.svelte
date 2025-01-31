@@ -20,7 +20,7 @@
 			</Tooltip.Trigger>
 			<Tooltip.Content>
 				<p>
-					ai readings are limited to ~2 per day <br />subsequent readings use pre-recorded, general
+					ai readings are limited to ~2 per hour <br />subsequent readings use pre-recorded, general
 					material
 				</p>
 			</Tooltip.Content>

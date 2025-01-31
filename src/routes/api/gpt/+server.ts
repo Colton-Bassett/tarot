@@ -14,7 +14,7 @@ const ratelimit = new Ratelimit({
 		url: UPSTASH_REDIS_REST_URL,
 		token: UPSTASH_REDIS_REST_TOKEN
 	}),
-	limiter: Ratelimit.slidingWindow(2, '50 s'),
+	limiter: Ratelimit.slidingWindow(2, '3600 s'),
 	analytics: true,
 	prefix: '@upstash/ratelimit'
 });

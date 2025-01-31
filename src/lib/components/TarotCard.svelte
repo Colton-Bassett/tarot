@@ -176,14 +176,14 @@
 		align-items: center;
 		justify-content: center;
 		aspect-ratio: 1;
-		min-width: 90px;
-		max-width: 90px;
-		min-height: 90px;
-		max-height: 90px;
+		min-width: 5.625rem;
+		max-width: 5.625rem;
+		min-height: 5.625rem;
+		max-height: 5.625rem;
 		box-sizing: border-box;
 		overflow: auto;
 		border: 1px solid #dedede;
-		border-radius: 2px;
+		border-radius: 0.125rem;
 		background-color: white;
 		font-family: 'Inter', sans-serif;
 		font-size: 0.875em;
@@ -219,7 +219,7 @@
 		transform: translate(-50%, -50%);
 		z-index: 10;
 		min-width: 90%;
-		min-height: 550px;
+		min-height: 34.375rem;
 		font-size: 1em;
 		padding: 1.5rem;
 		justify-content: flex-start;
@@ -245,7 +245,7 @@
 
 	@media (min-width: 768px) {
 		.center {
-			min-width: 450px;
+			min-width: 28.125rem;
 		}
 	}
 

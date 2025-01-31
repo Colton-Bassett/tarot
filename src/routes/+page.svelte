@@ -135,7 +135,7 @@
 		</TypeWriter>
 	</div>
 
-	<div class="flex min-h-[972px] max-w-5xl flex-col-reverse lg:flex-col">
+	<div class="flex min-h-[60.75rem] max-w-5xl flex-col-reverse lg:flex-col">
 		<div class="grid grid-cols-3 gap-2 md:grid-cols-6 lg:grid-cols-[repeat(10,_1fr)]">
 			{#each tarotDeck as card (card)}
 				<div animate:flip={{ duration: 500 }}>

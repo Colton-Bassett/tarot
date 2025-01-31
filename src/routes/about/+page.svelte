@@ -22,7 +22,7 @@
 	<meta name="description" content="about" />
 </svelte:head>
 <div class="flex flex-col items-center justify-center">
-	<div class="mx-2 mb-24 flex min-h-[972px] max-w-4xl flex-col md:mx-6">
+	<div class="mx-2 mb-24 flex min-h-[60.75rem] max-w-4xl flex-col md:mx-6">
 		<div class="border-b pb-8">
 			<h1 class="">About cb.tarot</h1>
 			<h3 class="">

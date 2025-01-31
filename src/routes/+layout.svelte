@@ -7,7 +7,7 @@
 
 <div class="app text-tra">
 	<Header />
-	<main class="min-h-screen p-8 lowercase">
+	<main class="min-h-screen p-8 pt-4 lowercase">
 		{@render children()}
 	</main>
 	<Footer />
