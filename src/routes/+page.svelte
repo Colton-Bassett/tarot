@@ -103,11 +103,10 @@
 	const shortcuts: Record<string, () => void> = {
 		Escape: closeCard,
 		a: () => goto('/about'),
-		g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
+		g: () => window.open('https://github.com/Colton-Bassett/tarot', '_blank'),
 		h: () => goto('/'),
 		p: deckOperations.pick,
 		r: deckOperations.reset,
-		s: () => alert('settings!'),
 		x: deckOperations.shuffle
 	};
 

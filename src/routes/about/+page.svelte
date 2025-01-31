@@ -5,10 +5,8 @@
 	function handleKeyPress(event: KeyboardEvent) {
 		const shortcuts: Record<string, () => void> = {
 			a: () => goto('/about'),
-			g: () => window.open('https://github.com/sveltejs/kit', '_blank'),
-			h: () => goto('/'),
-
-			s: () => alert('settings!')
+			g: () => window.open('https://github.com/Colton-Bassett/tarot', '_blank'),
+			h: () => goto('/')
 		};
 
 		shortcuts[event.key]?.();

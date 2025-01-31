@@ -5,15 +5,12 @@
 
 	<nav class="flex gap-6">
 		<ul class="flex gap-6">
-			<!-- <li class="flex h-16 items-center">
-				<a href="/" class="button">[s] set.</a>
-			</li> -->
 			<li class="flex h-16 items-center text-sm md:text-base">
 				<a href="/about" class="button">[a] about</a>
 			</li>
 		</ul>
 		<div class="flex h-16 items-center text-sm md:text-base">
-			<a href="https://github.com/sveltejs/kit" target="_blank" class="button">[g] gh.</a>
+			<a href="https://github.com/Colton-Bassett/tarot" target="_blank" class="button">[g] gh.</a>
 		</div>
 	</nav>
 </header>

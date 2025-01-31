@@ -1,6 +1,6 @@
 # cb.tarot
 
-cb.tarot is a GPT-powered tarot card reader designed with transparency and simplicity in mind. Users can shuffle a deck and draw random cards for their reading, all while having a clear view of the entire 78-card deck—no cards hidden or obfuscated. They can also customize elements like the inquiry topic, cardback design, and card orientation.
+cb.tarot is a GPT-powered tarot card reader designed with transparency and simplicity in mind. Users can shuffle a deck and draw random cards for their reading, all while having a clear view of the entire 78-card deck—no cards hidden or obfuscated. Users can also customize elements like the inquiry topic, cardback design, and card orientation.
 
 cb.tarot was built primarily to explore newer technology like SvelteKit, Cloudflare, the ChatGPT developer API, and Upstash.
 
