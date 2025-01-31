@@ -1,7 +1,4 @@
 <script lang="ts">
-	import type { Card } from '$lib/types';
-	import type { OrientationType } from '$lib/constants';
-
 	let {
 		shuffle,
 		reset,
@@ -18,7 +15,7 @@
 		<button class="button px-6 py-1" onclick={shuffle}> [x] shuffle </button>
 		<button class="button px-6 py-1 lowercase" onclick={reset}> [r] reset </button>
 	</div>
-	<button class="pickButton px-6 py-1 lowercase" onclick={pick}> [p] pick </button>
+	<button class="button px-6 py-1 lowercase" onclick={pick}> [p] pick </button>
 </div>
 
 <style>
@@ -33,14 +30,14 @@
 		border: 1px solid rgb(107 114 128 / var(--tw-border-opacity, 1));
 	}
 
-	.pickButton {
+	/* .pickButton {
 		border: 1px solid #dedede;
-		/* font-family: 'Inter Tight', sans-serif; */
+		font-family: 'Inter Tight', sans-serif;
 		font-family: 'IBM Plex Mono', serif;
 		text-transform: lowercase;
 
-		/* animation: pulseBorder 1s ease-in-out infinite; */
-	}
+		animation: pulseBorder 1s ease-in-out infinite;
+	} */
 
 	/* @keyframes pulseBorder {
 		0% {
